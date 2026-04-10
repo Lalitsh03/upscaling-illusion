@@ -9,7 +9,7 @@
 
 GPU manufacturers have spent the last three generations marketing AI upscaling as a revolution. DLSS 3, FSR 3, and XeSS all promise dramatically better performance with no extra silicon.
 
-But strip out the AI-generated frames and ask what the hardware itself delivers: **has real Performance Per Dollar (PPD) improved, stagnated, or declined?**
+But strip out the AI-generated frames and ask what the hardware itself delivers: **has real Performance Per Dollar (PPD — how much gaming performance you get per dollar spent) improved, stagnated, or declined?**
 
 This project investigates three angles:
 
@@ -23,22 +23,24 @@ This project investigates three angles:
 
 ### The divergence is real — but it is mostly frame generation
 
-Raw (native) rasterization PPD improved modestly over ~7 years:
+Raw (native) rasterization PPD roughly doubled — but took 7 years to get there:
 
 | Vendor | First Gen | Latest Gen | Native PPD Change |
 |--------|-----------|-----------|-------------------|
-| Nvidia | RTX 2000 (2018) | RTX 5000 (2025) | +101% |
-| AMD | RX 5000 (2019) | RX 9000 (2025) | +72% |
-| Intel | Arc A (2022) | Arc B (2024) | +46% |
+| Nvidia | RTX 2000 (2018) | RTX 5000 (2025) | ~2× |
+| AMD | RX 5000 (2019) | RX 9000 (2025) | ~1.7× |
+| Intel | Arc A (2022) | Arc B (2024) | ~1.5× |
 
 Effective PPD with upscaling and frame generation tells a very different story:
 
-- **Nvidia RTX 5000 with Multi Frame Gen reaches a 2.0× ratio vs native** — nearly half the stated performance gain comes from AI-generated frames, not rendered pixels
-- Before frame generation existed (pre-2022), the upscaling ratio was only 1.1–1.3×
+- **Nvidia RTX 5000 with Multi Frame Gen reaches 4× the effective PPD of the RTX 2000** — but only 2× of that is real rendered performance. The other 2× comes from AI-generated frames, not silicon progress
+- Before frame generation existed (pre-2022), the upscaling boost was only 1.1–1.3× — a modest quality improvement, not a headline multiplier
 
 ![The Divergence Chart](data/processed/chart_divergence_analysis.png)
 
-### Nvidia flagship prices rose 42% in real terms
+### Nvidia flagship prices rose 42% in inflation-adjusted dollars
+
+"Real terms" means prices adjusted for inflation — so a 2018 GPU priced at $700 is converted to what that $700 would be worth in 2024 dollars, making fair comparisons across years possible. In Nvidia's case, even after adjusting for inflation, flagship prices still went up significantly:
 
 | Generation | Avg Flagship Price (2024 USD) |
 |-----------|-------------------------------|
@@ -47,7 +49,7 @@ Effective PPD with upscaling and frame generation tells a very different story:
 | RTX 4000 (2022) | $850 (-6%) |
 | RTX 5000 (2025) | $1,057 (+24%) |
 
-AMD moved in the opposite direction — flagship prices fell ~18% in real terms while native PPD improved.
+So while raw performance roughly doubled, you are paying 1.4× more in real purchasing power to get there. AMD moved in the opposite direction — inflation-adjusted flagship prices fell ~18% while native PPD improved by ~1.7×.
 
 ![Price Trend Chart](data/processed/chart_price_analysis.png)
 
@@ -57,9 +59,22 @@ The RTX 4000 → RTX 5000 native PPD improvement (~26%) was the smallest single-
 
 ![CPU vs GPU Trajectory](data/processed/chart_cpu_gpu_analysis.png)
 
-### The AMD brand halo did not appear in the data
+### The AMD brand halo story is more complicated than it first appears
 
-AMD CPU share peaked at ~50% in 2021 — its strongest position in a decade. At that same moment, AMD GPU share was at its **lowest point (~18%)**. The correlation between AMD CPU and GPU market share over this period is **negative** — Nvidia's DLSS ecosystem advantage and RTX mindshare held regardless of what was happening on the CPU side.
+AMD CPU share peaked at ~50% in 2021 — its strongest position in a decade. At that same moment, AMD GPU share hit its **lowest point (~18%)**. No immediate halo effect.
+
+But the story does not end there. AMD GPU share recovered every single year after 2021:
+
+| Year | AMD GPU Share | AMD CPU Share |
+|------|--------------|--------------|
+| 2019 | 27% | 36% |
+| 2020 | 25% | 47% |
+| 2021 | 18% *(lowest)* | 50% *(peak)* |
+| 2022 | 21% | 41% |
+| 2023 | 22% | 39% |
+| 2024 | 22% | 43% |
+
+The question worth asking: was the post-2021 GPU recovery driven by a delayed brand halo from CPU dominance — or simply by AMD releasing genuinely competitive hardware with the RX 7000 series in 2022? The data cannot separate these two effects. What it does show clearly is that **the expected immediate brand carry-over did not happen** — if anything, GPU share was squeezed hardest precisely when CPU dominance was at its peak, suggesting Nvidia's DLSS ecosystem created a stickiness that brand sentiment alone could not overcome.
 
 ![AMD Brand Halo](data/processed/chart_brand_halo_analysis.png)
 
@@ -256,6 +271,20 @@ python looker/build_dashboard.py
 
 ---
 
+## Conclusion
+
+AI upscaling is real technology that genuinely improved what consumers could do with a given GPU. But the way it is marketed conflates two very different things: better rendering and AI-generated frames — and the data shows the industry has leaned harder on the second as the first got harder to deliver.
+
+Raw GPU performance roughly doubled over 7 years across all three vendors. That sounds significant until you realise Nvidia's flagship prices also went up 1.4× in that same window. AMD delivered better raw value — native PPD improved ~1.7× while prices actually fell in inflation-adjusted terms. Intel Arc came in as the strongest value play per raw dollar, though with the smallest ecosystem.
+
+The frame generation story is the most important finding. Before 2022, upscaling added a modest 1.1–1.3× boost — a real quality improvement. After 2022, frame generation pushed the effective multiplier to 1.65–2.0×, which is what drives the impressive generational comparison numbers manufacturers put in their marketing. Strip it out, and the hardware improvements are solid but unspectacular.
+
+The AMD brand halo question has no clean answer. CPU dominance did not translate to immediate GPU share gains — the opposite happened. But AMD's GPU recovery from 2022 onwards leaves open whether the groundwork laid during the Ryzen era contributed later, alongside competitive hardware. The data alone cannot resolve that.
+
+The overall picture: the technology is delivering more performance per dollar, but the gains are increasingly coming from software and AI rather than from the silicon itself — and prices have moved upward to capture much of that value back from the consumer.
+
+---
+
 ## Interview One-Liner
 
-*"I found that AI upscaling genuinely improved value per dollar — but the headline numbers are misleading. Strip out frame generation, and Nvidia's native raw performance improved only ~100% over 7 years while prices rose 42% in real terms. The technology is real; the framing around it is marketing."*
+*"AI upscaling genuinely improved what you get per dollar — but the headline numbers obscure where the gains actually come from. Strip out frame generation and Nvidia's hardware roughly doubled in 7 years, while prices went up 1.4×. AMD nearly doubled performance while actually getting cheaper. The silicon progress is real — the marketing just makes it sound like more than it is."*
