@@ -1,0 +1,50 @@
+gpu_name,vendor,generation,tier,launch_year,launch_month,launch_price_usd,tdp_watts,vram_gb,process_node_nm,upscaling_tech,upscaling_version,upscaling_boost_no_fg,upscaling_boost_with_fg,perf_score_native_1440p,notes
+RTX 2060,Nvidia,RTX 2000,mid,2019,1,349,160,6,12,DLSS,1.0,1.10,1.10,55,
+RTX 2060 Super,Nvidia,RTX 2000,mid,2019,7,399,175,8,12,DLSS,1.0,1.10,1.10,63,
+RTX 2070,Nvidia,RTX 2000,high,2018,10,499,175,8,12,DLSS,1.0,1.10,1.10,67,
+RTX 2070 Super,Nvidia,RTX 2000,high,2019,7,499,215,8,12,DLSS,1.0,1.10,1.10,74,
+RTX 2080,Nvidia,RTX 2000,flagship,2018,9,699,215,8,12,DLSS,1.0,1.10,1.10,82,
+RTX 2080 Super,Nvidia,RTX 2000,flagship,2019,7,699,250,8,12,DLSS,1.0,1.10,1.10,87,
+RTX 2080 Ti,Nvidia,RTX 2000,flagship,2018,9,999,250,11,12,DLSS,1.0,1.10,1.10,96,
+RTX 3060,Nvidia,RTX 3000,mid,2021,2,329,170,12,8,DLSS,2.x,1.30,1.30,64,No Frame Gen on 30-series
+RTX 3060 Ti,Nvidia,RTX 3000,mid,2020,12,399,200,8,8,DLSS,2.x,1.30,1.30,79,No Frame Gen on 30-series
+RTX 3070,Nvidia,RTX 3000,high,2020,10,499,220,8,8,DLSS,2.x,1.30,1.30,93,No Frame Gen on 30-series
+RTX 3070 Ti,Nvidia,RTX 3000,high,2021,6,599,290,8,8,DLSS,2.x,1.30,1.30,99,No Frame Gen on 30-series
+RTX 3080,Nvidia,RTX 3000,flagship,2020,9,699,320,10,8,DLSS,2.x,1.30,1.30,100,Baseline GPU - index = 100
+RTX 3080 Ti,Nvidia,RTX 3000,flagship,2021,6,1199,350,12,8,DLSS,2.x,1.30,1.30,111,No Frame Gen on 30-series
+RTX 3090,Nvidia,RTX 3000,flagship,2020,9,1499,350,24,8,DLSS,2.x,1.30,1.30,113,No Frame Gen on 30-series
+RTX 4060,Nvidia,RTX 4000,mid,2023,6,299,115,8,4,DLSS,3.x,1.30,1.70,73,Frame Gen available
+RTX 4060 Ti,Nvidia,RTX 4000,mid,2023,5,399,165,8,4,DLSS,3.x,1.30,1.70,87,Frame Gen available
+RTX 4070,Nvidia,RTX 4000,high,2023,4,599,200,12,4,DLSS,3.x,1.30,1.70,109,Frame Gen available
+RTX 4070 Super,Nvidia,RTX 4000,high,2024,1,599,220,12,4,DLSS,3.x,1.30,1.70,120,Frame Gen available
+RTX 4070 Ti,Nvidia,RTX 4000,high,2023,1,799,285,12,4,DLSS,3.x,1.30,1.70,131,Frame Gen available
+RTX 4070 Ti Super,Nvidia,RTX 4000,high,2024,1,799,285,16,4,DLSS,3.x,1.30,1.70,141,Frame Gen available
+RTX 4080,Nvidia,RTX 4000,flagship,2022,11,1199,320,16,4,DLSS,3.x,1.30,1.70,149,Frame Gen available
+RTX 4080 Super,Nvidia,RTX 4000,flagship,2024,1,999,320,16,4,DLSS,3.x,1.30,1.70,157,Frame Gen available
+RTX 4090,Nvidia,RTX 4000,flagship,2022,10,1599,450,24,4,DLSS,3.x,1.30,1.70,193,Frame Gen available
+RTX 5070,Nvidia,RTX 5000,mid,2025,2,549,250,12,4,DLSS,4.x,1.35,2.00,158,Multi Frame Gen; review scores still arriving
+RTX 5070 Ti,Nvidia,RTX 5000,high,2025,1,749,300,16,4,DLSS,4.x,1.35,2.00,178,Multi Frame Gen
+RTX 5080,Nvidia,RTX 5000,flagship,2025,1,999,360,16,4,DLSS,4.x,1.35,2.00,195,Multi Frame Gen
+RTX 5090,Nvidia,RTX 5000,flagship,2025,1,1999,575,32,4,DLSS,4.x,1.35,2.00,245,Multi Frame Gen
+RX 5500 XT,AMD,RX 5000,mid,2019,12,169,130,8,7,None,N/A,1.00,1.00,43,FSR came post-launch; excluded from upscaling analysis
+RX 5600 XT,AMD,RX 5000,mid,2020,1,279,150,6,7,None,N/A,1.00,1.00,58,FSR came post-launch
+RX 5700,AMD,RX 5000,high,2019,7,349,180,8,7,None,N/A,1.00,1.00,66,FSR came post-launch
+RX 5700 XT,AMD,RX 5000,high,2019,7,399,225,8,7,None,N/A,1.00,1.00,73,FSR came post-launch
+RX 6600,AMD,RX 6000,mid,2021,10,329,132,8,7,FSR,2.x,1.25,1.25,69,No Frame Gen on 6000-series
+RX 6600 XT,AMD,RX 6000,mid,2021,8,379,160,8,7,FSR,2.x,1.25,1.25,78,No Frame Gen on 6000-series
+RX 6700 XT,AMD,RX 6000,high,2021,3,479,230,12,7,FSR,2.x,1.25,1.25,91,No Frame Gen on 6000-series
+RX 6800,AMD,RX 6000,high,2020,11,579,250,16,7,FSR,2.x,1.25,1.25,103,No Frame Gen on 6000-series
+RX 6800 XT,AMD,RX 6000,flagship,2020,11,649,300,16,7,FSR,2.x,1.25,1.25,114,No Frame Gen on 6000-series
+RX 6900 XT,AMD,RX 6000,flagship,2020,12,999,300,16,7,FSR,2.x,1.25,1.25,122,No Frame Gen on 6000-series
+RX 7600,AMD,RX 7000,mid,2023,5,269,165,8,5,FSR,3.x,1.25,1.65,76,Frame Gen available
+RX 7700 XT,AMD,RX 7000,mid,2023,9,449,245,12,5,FSR,3.x,1.25,1.65,97,Frame Gen available
+RX 7800 XT,AMD,RX 7000,high,2023,9,499,263,16,5,FSR,3.x,1.25,1.65,109,Frame Gen available
+RX 7900 GRE,AMD,RX 7000,high,2023,9,549,260,16,5,FSR,3.x,1.25,1.65,122,Frame Gen available
+RX 7900 XT,AMD,RX 7000,flagship,2022,12,899,315,20,5,FSR,3.x,1.25,1.65,137,Frame Gen available
+RX 7900 XTX,AMD,RX 7000,flagship,2022,12,999,355,24,5,FSR,3.x,1.25,1.65,150,Frame Gen available
+RX 9070,AMD,RX 9000,high,2025,3,549,220,16,4,FSR,4.x,1.35,1.75,158,FSR 4 ML-based; Frame Gen available
+RX 9070 XT,AMD,RX 9000,high,2025,3,599,304,16,4,FSR,4.x,1.35,1.75,168,FSR 4 ML-based; Frame Gen available
+Arc A750,Intel,Arc A,mid,2022,10,289,225,8,6,XeSS,1.x,1.20,1.20,66,No Frame Gen on Arc A
+Arc A770,Intel,Arc A,high,2022,10,349,225,16,6,XeSS,1.x,1.20,1.20,74,No Frame Gen on Arc A
+Arc B580,Intel,Arc B,mid,2024,12,249,190,12,5,XeSS,2.x,1.35,1.35,80,No Frame Gen on Arc B currently
+Arc B770,Intel,Arc B,high,2025,2,349,225,16,5,XeSS,2.x,1.35,1.35,92,Estimated; verify against Hardware Unboxed

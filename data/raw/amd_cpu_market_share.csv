@@ -1,0 +1,14 @@
+year,quarter,intel_cpu_pct,amd_cpu_pct,source_notes
+2017,Q4,80.0,20.0,Pre-Ryzen baseline (approximate)
+2018,Q2,72.0,28.0,Ryzen 1000/2000 gaining traction
+2019,Q2,64.0,36.0,Ryzen 3000 / 7nm momentum
+2020,Q1,56.0,44.0,Zen 2 competitive in desktop
+2020,Q4,50.0,50.0,Zen 3 launches; AMD near parity
+2021,Q2,48.0,52.0,AMD leads desktop market share briefly
+2021,Q4,52.0,48.0,Intel Alder Lake 12th Gen recovery
+2022,Q2,58.0,42.0,Intel 12th/13th Gen competitive again
+2022,Q4,61.0,39.0,
+2023,Q2,62.0,38.0,Intel defending with 13th Gen
+2023,Q4,60.0,40.0,AMD Ryzen 7000 value improving
+2024,Q2,58.0,42.0,AMD Zen 5 launches
+2024,Q4,57.0,43.0,

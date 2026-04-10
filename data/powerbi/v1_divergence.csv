@@ -1,0 +1,31 @@
+vendor,generation,gen_launch_year,metric,perf_per_dollar,metric_label,metric_order
+AMD,RX 5000,2019,Raw_Rasterization,0.1675,Raw rasterization (native),1
+AMD,RX 6000,2020,Raw_Rasterization,0.1498,Raw rasterization (native),1
+AMD,RX 7000,2022,Raw_Rasterization,0.1954,Raw rasterization (native),1
+AMD,RX 9000,2025,Raw_Rasterization,0.2888,Raw rasterization (native),1
+Intel,Arc A,2022,Raw_Rasterization,0.2016,Raw rasterization (native),1
+Intel,Arc B,2024,Raw_Rasterization,0.2946,Raw rasterization (native),1
+Nvidia,RTX 2000,2018,Raw_Rasterization,0.1063,Raw rasterization (native),1
+Nvidia,RTX 3000,2020,Raw_Rasterization,0.1246,Raw rasterization (native),1
+Nvidia,RTX 4000,2022,Raw_Rasterization,0.1699,Raw rasterization (native),1
+Nvidia,RTX 5000,2025,Raw_Rasterization,0.2142,Raw rasterization (native),1
+AMD,RX 5000,2019,Upscaling_No_FrameGen,0.1675,Upscaling — no Frame Gen,2
+AMD,RX 6000,2020,Upscaling_No_FrameGen,0.1873,Upscaling — no Frame Gen,2
+AMD,RX 7000,2022,Upscaling_No_FrameGen,0.2442,Upscaling — no Frame Gen,2
+AMD,RX 9000,2025,Upscaling_No_FrameGen,0.3898,Upscaling — no Frame Gen,2
+Intel,Arc A,2022,Upscaling_No_FrameGen,0.242,Upscaling — no Frame Gen,2
+Intel,Arc B,2024,Upscaling_No_FrameGen,0.3977,Upscaling — no Frame Gen,2
+Nvidia,RTX 2000,2018,Upscaling_No_FrameGen,0.117,Upscaling — no Frame Gen,2
+Nvidia,RTX 3000,2020,Upscaling_No_FrameGen,0.162,Upscaling — no Frame Gen,2
+Nvidia,RTX 4000,2022,Upscaling_No_FrameGen,0.2208,Upscaling — no Frame Gen,2
+Nvidia,RTX 5000,2025,Upscaling_No_FrameGen,0.2892,Upscaling — no Frame Gen,2
+AMD,RX 5000,2019,Upscaling_With_FrameGen,0.1675,Upscaling + Frame Gen,3
+AMD,RX 6000,2020,Upscaling_With_FrameGen,0.1873,Upscaling + Frame Gen,3
+AMD,RX 7000,2022,Upscaling_With_FrameGen,0.3224,Upscaling + Frame Gen,3
+AMD,RX 9000,2025,Upscaling_With_FrameGen,0.5053,Upscaling + Frame Gen,3
+Intel,Arc A,2022,Upscaling_With_FrameGen,0.242,Upscaling + Frame Gen,3
+Intel,Arc B,2024,Upscaling_With_FrameGen,0.3977,Upscaling + Frame Gen,3
+Nvidia,RTX 2000,2018,Upscaling_With_FrameGen,0.117,Upscaling + Frame Gen,3
+Nvidia,RTX 3000,2020,Upscaling_With_FrameGen,0.162,Upscaling + Frame Gen,3
+Nvidia,RTX 4000,2022,Upscaling_With_FrameGen,0.2887,Upscaling + Frame Gen,3
+Nvidia,RTX 5000,2025,Upscaling_With_FrameGen,0.4285,Upscaling + Frame Gen,3

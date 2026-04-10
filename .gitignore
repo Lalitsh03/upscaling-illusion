@@ -1,0 +1,20 @@
+# Regenerable from notebooks — excluded to keep repo size small
+data/gpu_analysis.db
+
+# Executed notebooks have large embedded outputs — run locally to reproduce
+notebooks/*_executed.ipynb
+
+# Dev/build helper scripts (not portfolio deliverables)
+notebooks/build_analysis_notebook.py
+
+# Claude Code session files
+.claude/
+
+# Python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db

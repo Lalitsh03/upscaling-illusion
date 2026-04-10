@@ -1,0 +1,14 @@
+year,quarter,nvidia_pct,amd_pct,intel_pct,source_notes
+2019,Q1,72.2,27.8,0.0,JPR / Steam Hardware Survey composite
+2019,Q3,73.1,26.9,0.0,
+2020,Q1,74.5,25.5,0.0,
+2020,Q3,76.1,23.9,0.0,RTX 3000 launch hype
+2021,Q1,80.5,19.5,0.0,GPU shortage era - Nvidia allocated better
+2021,Q3,83.0,17.0,0.0,Peak Nvidia share during shortage
+2022,Q1,80.3,19.7,0.0,
+2022,Q3,78.1,21.4,0.5,Intel Arc launches
+2023,Q1,77.0,21.0,2.0,Intel Arc B growing
+2023,Q3,76.0,22.0,2.0,
+2024,Q1,75.5,22.0,2.5,
+2024,Q3,74.8,22.7,2.5,
+2025,Q1,73.0,24.0,3.0,RX 9000 value proposition improving AMD share
