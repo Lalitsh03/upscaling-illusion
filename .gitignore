@@ -7,9 +7,6 @@ notebooks/*_executed.ipynb
 # Dev/build helper scripts (not portfolio deliverables)
 notebooks/build_analysis_notebook.py
 
-# Claude Code session files
-.claude/
-
 # Python
 __pycache__/
 *.pyc
