@@ -111,10 +111,7 @@ data/raw/
                                          │          │
                               notebooks/02_analysis.ipynb     sql/02_analysis_queries.sql
                               (Python charts + findings)      (9 queries — run in DBeaver)
-                                         │
-                              data/powerbi/  (5 reshaped view CSVs)
-                                         │
-                              powerbi/upscaling_illusion_dashboard.pbix
+
 ```
 
 ### Step 1 — Data cleaning and enrichment (Notebook 01)
