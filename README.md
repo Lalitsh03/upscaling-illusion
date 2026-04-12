@@ -173,12 +173,8 @@ Nine standalone queries in `sql/02_analysis_queries.sql` cover every angle of th
 ├── sql/
 │   ├── 01_schema.sql              # SQLite schema documentation
 │   └── 02_analysis_queries.sql   # 9 analysis queries — DBeaver-ready
-├── powerbi/
-│   ├── upscaling_illusion_dashboard.pbix
-│   └── POWER_BI_BUILD_GUIDE.md
 └── looker/
-    ├── dashboard.html             # Standalone interactive dashboard (open in any browser)
-    └── build_dashboard.py
+    └── dashboard.html             # Standalone interactive dashboard (open in any browser)
 ```
 
 ---
