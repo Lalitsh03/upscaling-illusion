@@ -243,7 +243,7 @@ python looker/build_dashboard.py
 - Benchmark data is not always directly comparable across generations as there are different test rigs and game mixes
 - Upscaling boost multipliers are averages; per-game variance is high
 - Frame generation adds input latency not captured in raw FPS metrics
-- Market share data is estimated from JPR composites and Steam Hardware Survey
+- Market share data is estimated from Steam Hardware Survey
 - Correlation ≠ causation throughout, especially the brand halo section
 
 ---
