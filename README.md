@@ -3,6 +3,8 @@
 
 > An end to end data analysis project examining whether DLSS, FSR, and XeSS genuinely delivered better value per dollar across GPU generations, or whether manufacturers used AI upscaling as cover to slow raw hardware progress while raising prices.
 
+> 🔗 [**Open Interactive Dashboard**](https://lalitsh03.github.io/upscaling-illusion/looker/dashboard.html)
+
 ---
 
 ## The Question
@@ -16,6 +18,14 @@ This project investigates three angles:
 1. **The core divergence** — how much of the generational PPD improvement across Nvidia RTX 2000–5000, AMD RX 5000–9000, and Intel Arc A–B is raw silicon progress vs AI-assisted frame injection?
 2. **CPU vs GPU trajectory** — did GPU raw performance growth slow relative to CPUs over the same period, quietly pushing the industry toward AI workarounds instead of better hardware?
 3. **AMD brand halo** — when AMD dominated the CPU market with Ryzen (2019–2022), did that translate into GPU market share gains? Or did Nvidia's AI ecosystem hold the line regardless?
+
+---
+
+## Interactive Dashboard
+
+[![Dashboard Preview](data/processed/chart_dashboard_preview.png)](https://lalitsh03.github.io/upscaling-illusion/looker/dashboard.html)
+
+*Click the image to open the live interactive version — hover over any data point for exact values, zoom into specific generations, and toggle series on/off via the legend.*
 
 ---
 
