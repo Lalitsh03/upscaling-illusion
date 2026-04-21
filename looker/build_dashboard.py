@@ -67,9 +67,9 @@ cpu_sh  = cpu_sh.groupby("year")[["amd_cpu_share","intel_cpu_share"]].mean().res
 gen_agg["fg_ratio"] = (gen_agg["avg_ppd_with_fg"] / gen_agg["avg_ppd_native"]).round(2)
 
 # ── Chart 1: Divergence ───────────────────────────────────────────────────────
+# No subplot_titles here — we place vendor labels as annotations INSIDE each panel
 fig1 = make_subplots(
     rows=1, cols=3,
-    subplot_titles=["<b>Nvidia</b>", "<b>AMD</b>", "<b>Intel</b>"],
     shared_yaxes=False,
     horizontal_spacing=0.08,
 )
@@ -120,20 +120,26 @@ for col_idx, vendor in enumerate(["Nvidia", "AMD", "Intel"], start=1):
         row=1, col=col_idx,
     )
 
-# Colour vendor titles to brand colour and nudge them down so they clear the subtitle
-for i, (annotation, color) in enumerate(zip(fig1.layout.annotations, [NVIDIA, AMD, INTEL])):
-    annotation.font = dict(color=color, size=14)
-    annotation.y = annotation.y - 0.06   # push below the main title subtitle
+    # Vendor label INSIDE the panel — top-left corner using paper coords
+    # xref/yref use paper coordinates: col1 ≈ 0.10, col2 ≈ 0.44, col3 ≈ 0.78
+    x_paper = [0.10, 0.44, 0.78][col_idx - 1]
+    fig1.add_annotation(
+        x=x_paper, y=0.97,
+        xref="paper", yref="paper",
+        text=f"<b>{vendor}</b>",
+        showarrow=False,
+        font=dict(color=brand_col, size=14),
+        xanchor="center", yanchor="top",
+    )
 
-fig1_layout = {**BASE_LAYOUT, "margin": dict(l=50, r=20, t=110, b=50)}
 fig1.update_layout(
-    **fig1_layout,
+    **BASE_LAYOUT,
     title=dict(
         text="<b>The Divergence: Raw vs Effective Performance Per Dollar</b><br>"
              "<span style='font-size:12px;color:#666'>Frame Generation (RTX 4000+ / RX 7000+) drives most of the gap</span>",
-        font=dict(size=16, color=TEXT), x=0.05, y=0.97,
+        font=dict(size=16, color=TEXT), x=0.05,
     ),
-    height=460,
+    height=420,
     legend=dict(orientation="h", yanchor="bottom", y=-0.22, xanchor="center", x=0.5,
                 bgcolor="#ffffff", bordercolor=BORDER, borderwidth=1, font=dict(size=11, color=TEXT),
                 traceorder="normal"),
