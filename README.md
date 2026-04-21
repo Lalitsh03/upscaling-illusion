@@ -188,6 +188,40 @@ Nine standalone queries in `sql/02_analysis_queries.sql` cover every angle of th
 
 ## Methodology
 
+### Benchmark Scores — What They Are and Why We Used Them
+
+**GPU — 1440p rasterization index (Tom's Hardware GPU Hierarchy)**
+
+Every GPU in the dataset has a `perf_score_native_1440p` — a relative performance index anchored to the RTX 3080 at launch = 100. A score of 150 means that GPU is approximately 50% faster than an RTX 3080 at 1440p rasterization. A score of 70 means 30% slower.
+
+The index is built from Tom's Hardware GPU Hierarchy which averages 1440p framerates across a standardised game suite covering multiple engines and genres. Using a composite average rather than a single game is important — a GPU that excels in one engine but underperforms in another produces a misleading single-game result. The composite average smooths this out.
+
+**Why 1440p specifically?** At 1080p, the CPU starts to bottleneck many GPUs in the dataset, meaning the score reflects the test rig's processor as much as the GPU itself. At 4K, even high-end GPUs become VRAM and bandwidth-limited in ways that change the ranking order. 1440p is the resolution range where GPU-to-GPU differences are most clearly visible and where most of this dataset's target market actually plays.
+
+**CPU — PassMark single-thread score**
+
+CPU performance uses PassMark's single-thread performance index. This measures how fast one CPU core can execute a standardised sequence of operations — integer maths, floating point, encryption, compression.
+
+**Why single-thread?** Gaming performance is primarily limited by single-thread CPU speed, not core count. A 16-core CPU with slow cores will often underperform a 6-core CPU with fast cores in games because the game engine's main thread is the bottleneck. Multi-thread scores would be more relevant for rendering or encoding workloads, not gaming.
+
+---
+
+### Cross-Brand Price-Tier Comparison
+
+The flagship-filtered price trend chart tracks how the top of each vendor's range has moved over time. But flagship comparisons alone miss the more common question: **what does the same budget actually get you from each brand?**
+
+The dataset covers three tiers — flagship, mid, and budget — across all three vendors. The pattern that holds across tiers:
+
+| Price bracket | Native PPD winner | Notes |
+|--------------|------------------|-------|
+| Budget (~$150–250) | **Intel Arc** | Strongest raw performance per dollar; smaller ecosystem, fewer upscaling features |
+| Mid-range (~$300–500) | **AMD** | Consistently better native PPD than Nvidia at equivalent prices; FSR works on any GPU |
+| Flagship (~$700+) | **Nvidia** (effective PPD) / **AMD** (native PPD) | Nvidia leads once DLSS + Frame Gen is counted; AMD leads on raw rasterisation value |
+
+The key nuance: Nvidia's ecosystem advantage (DLSS quality, frame generation maturity, wider game support) makes effective PPD comparisons move in Nvidia's favour at the high end, even when AMD's native silicon delivers more raw performance per dollar. At the mid and budget end where frame generation is less impactful, AMD and Intel represent better raw value.
+
+---
+
 ### Performance Per Dollar (PPD)
 
 The core metric. For each GPU:
