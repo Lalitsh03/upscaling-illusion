@@ -84,7 +84,7 @@ But the story does not end there. AMD GPU share recovered every single year afte
 | 2023 | 22% | 39% |
 | 2024 | 22% | 43% |
 
-The question worth asking: was the post-2021 GPU recovery driven by a delayed brand halo from CPU dominance or simply by AMD releasing genuinely competitive hardware with the RX 7000 series in 2022? The data cannot separate these two effects. What it does show clearly is that **the expected immediate brand carry-over did not happen** if anything, GPU share was squeezed hardest precisely when CPU dominance was at its peak, suggesting Nvidia's DLSS ecosystem created a stickiness that brand sentiment alone could not overcome.
+Two explanations compete here. The first is that the post-2021 recovery is simply the RX 7000 series being genuinely competitive hardware — nothing more. The second is a **delayed brand halo**: by 2022 AMD's CPU dominance had been mainstream for two to three years, and the enthusiast narrative had shifted toward full AMD platform builds (Ryzen CPU + Radeon GPU) as a coherent value play. On that reading, the CPU mindshare didn't convert immediately because Nvidia's RTX 3000 DLSS advantage was too strong to overcome mid-cycle — but by the time the next generation launched, enough buyers were already AMD-curious that the RX 7000 had an easier entry. The data cannot separate these effects. What it does show clearly is that **Nvidia's DLSS ecosystem created stickiness that pure brand sentiment could not break in the short term**, and that whatever drove the recovery, it took a full hardware cycle to materialise.
 
 ![AMD Brand Halo](data/processed/chart_brand_halo_analysis.png)
 
@@ -250,11 +250,40 @@ python looker/build_dashboard.py
 
 ## Limitations
 
-- Benchmark data is not always directly comparable across generations as there are different test rigs and game mixes
-- Upscaling boost multipliers are averages; per-game variance is high
-- Frame generation adds input latency not captured in raw FPS metrics
-- Market share data is estimated from Steam Hardware Survey
-- Correlation ≠ causation throughout, especially the brand halo section
+### Single benchmark source — by design, not by accident
+
+The most significant constraint in this project is that all GPU performance data comes from a single source (Tom's Hardware GPU Hierarchy, cross-referenced with Hardware Unboxed generation reviews). This was a deliberate decision, not an oversight.
+
+GPU benchmarks are notoriously difficult to combine across sources. A score from PassMark, 3DMark, or a reviewer's custom test suite depends heavily on the specific test rig — CPU, RAM speed, storage, core count configuration, driver version, game mix and resolution. A GPU that scores 110 in one reviewer's suite and 95 in another's may not actually be 15% faster in any meaningful sense; the delta could be RAM latency, CPU bottleneck, or simply a different game selection. Mixing sources would introduce systematic discrepancies that look like real performance differences but are not.
+
+Using a single consistent source means the relative values within the dataset are trustworthy even if the absolute numbers don't match any one specific review you might read elsewhere. The trade-off is coverage — some GPU generations have fewer data points than would be ideal.
+
+### Other constraints
+
+- **Upscaling multipliers are generation averages** — per-game variance for DLSS/FSR/XeSS can swing 15–25% depending on the title, so individual game results will differ from the averages used here
+- **Frame generation and input latency** — the FPS numbers frame generation produces are real, but they come with added input latency that is not captured in any performance index. A competitive or latency-sensitive player may find frame-generated FPS less useful than native FPS at the same number
+- **Market share estimates are approximate** — figures sourced from Jon Peddie Research quarterly estimates and Steam Hardware Survey composites; useful for trend direction, not precise percentages
+- **Correlation ≠ causation** — especially in the brand halo section. The chart shows what happened to AMD GPU share as CPU share moved; it does not prove any causal mechanism
+
+### The laptop gap — a real limitation and a future direction
+
+AI upscaling arguably delivers its strongest value proposition on laptops, where thermal and power constraints mean native rasterisation performance is most limited. A mid-range laptop GPU running DLSS at quality mode can feel significantly faster than its native framerate suggests.
+
+This project has no laptop data. The reason is the same as above, but compounded: laptop GPU benchmarks are fragmented across thousands of configurations — different TDP limits for the same GPU SKU, regional variants, different display resolutions (from 1080p to 2.8K OLED), different RAM configurations, and different cooling setups. A benchmark for an RTX 4060 Laptop GPU in one review is often measuring a different thermal envelope than the same GPU in another review. Combining these into a meaningful PPD metric would require controlling for variables that most reviews do not publish.
+
+This is not a reason to ignore the laptop market — it is a reason why a dedicated laptop GPU analysis would need to be scoped very differently, probably anchored to a single OEM line or a single reviewer who has tested consistently across configurations.
+
+---
+
+## Potential Future Extensions
+
+| Extension | Why it matters |
+|-----------|---------------|
+| **Laptop GPU analysis** | AI upscaling has the biggest real-world impact on power-constrained mobile GPUs — but requires a controlled single-source dataset scoped to consistent configurations |
+| **Per-game upscaling variance** | The generation-average multipliers used here hide significant title-to-title variance in DLSS/FSR/XeSS quality; a game-level breakdown would be more precise |
+| **Input latency dimension** | Frame generation inflates FPS but increases input latency — adding a latency-adjusted PPD metric would give a more complete picture for competitive players |
+| **RTX 5000 / RX 9000 live data** | The latest generation data in this project is based on launch benchmarks; updating with post-launch driver-optimised numbers over time would test whether the FG ratio holds |
+| **Regional pricing** | GPU prices vary significantly by market; extending the inflation adjustment to non-USD markets (EU, India, SEA) would make the value analysis globally relevant |
 
 ---
 
