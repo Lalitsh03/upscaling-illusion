@@ -217,9 +217,23 @@ Frame generation is tracked separately (`fg_inflation_factor`) because it genera
 
 All launch prices converted to **2024 USD** using US Bureau of Labor Statistics CPI annual multipliers, making a 2018 $499 GPU directly comparable to a 2025 $599 GPU.
 
-### CPU vs GPU Trajectory
+### CPU vs GPU Trajectory — Re-indexing to 2019 = 100
 
-Both CPU (single-thread) and GPU (1440p raster) series re-indexed to their own **2019 = 100** baseline so growth *rates* are comparable across different benchmark scales.
+CPU and GPU benchmarks are measured in completely different units — a GPU rasterization score of 150 and a CPU single-thread score of 3200 have no meaningful relationship to each other. Plotting them on the same axis raw would produce a chart that shows size, not growth.
+
+Re-indexing solves this. For each series, the 2019 value is set to **100**. Every other year is then expressed as a percentage of that starting point. A value of 160 in 2023 means that metric grew 60% since 2019. A value of 130 means 30% growth. Now every line starts at the same point and the chart shows **growth rate only** — which is the actual question being asked.
+
+The word "own" matters: each line uses *its own* 2019 value as the base independently. Nvidia's GPU line and Intel's CPU line both start at 100 in 2019, but 100 means something different for each of them. This is intentional — it removes any cross-series magnitude comparison and leaves only the trajectory.
+
+### Generation Averaging
+
+Individual GPUs within the same generation (e.g. RTX 4070, 4070 Ti, 4080, 4090) have very different price and performance points. Plotting every GPU individually would make generational trends unreadable and would skew results toward whichever tier happened to have more SKUs.
+
+For the divergence and price trend analysis, all GPUs within a generation are **averaged into a single generation-level data point**. This means the RTX 4000 series is represented by one number — the mean PPD and mean price across all RTX 4000 GPUs in the dataset — rather than four separate points pulling the line in different directions. The individual GPU dots are still shown behind the line in the price chart so the spread is visible.
+
+### Flagship-Only Filtering (Price Chart)
+
+The price trend chart is filtered to **flagship-tier GPUs only** (RTX 4090, RX 7900 XTX, Arc A770, etc.). The reason is that comparing a budget GPU from 2018 to a flagship from 2025 would tell you about product mix changes, not about whether the top-end market has gotten more expensive. Filtering to flagship ensures the comparison is like-for-like — the best each vendor offered at each point in time.
 
 ---
 
