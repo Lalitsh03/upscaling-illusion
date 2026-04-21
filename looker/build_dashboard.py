@@ -120,18 +120,20 @@ for col_idx, vendor in enumerate(["Nvidia", "AMD", "Intel"], start=1):
         row=1, col=col_idx,
     )
 
-# Colour vendor titles to brand colour
+# Colour vendor titles to brand colour and nudge them down so they clear the subtitle
 for i, (annotation, color) in enumerate(zip(fig1.layout.annotations, [NVIDIA, AMD, INTEL])):
     annotation.font = dict(color=color, size=14)
+    annotation.y = annotation.y - 0.06   # push below the main title subtitle
 
+fig1_layout = {**BASE_LAYOUT, "margin": dict(l=50, r=20, t=110, b=50)}
 fig1.update_layout(
-    **BASE_LAYOUT,
+    **fig1_layout,
     title=dict(
         text="<b>The Divergence: Raw vs Effective Performance Per Dollar</b><br>"
              "<span style='font-size:12px;color:#666'>Frame Generation (RTX 4000+ / RX 7000+) drives most of the gap</span>",
-        font=dict(size=16, color=TEXT), x=0.05,
+        font=dict(size=16, color=TEXT), x=0.05, y=0.97,
     ),
-    height=420,
+    height=460,
     legend=dict(orientation="h", yanchor="bottom", y=-0.22, xanchor="center", x=0.5,
                 bgcolor="#ffffff", bordercolor=BORDER, borderwidth=1, font=dict(size=11, color=TEXT),
                 traceorder="normal"),
