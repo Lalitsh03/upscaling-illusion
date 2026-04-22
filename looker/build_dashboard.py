@@ -82,7 +82,7 @@ gpus["ppd_street_native"] = (
 fig1 = make_subplots(
     rows=1, cols=3,
     shared_yaxes=False,
-    horizontal_spacing=0.08,
+    horizontal_spacing=0.04,
 )
 
 for col_idx, vendor in enumerate(["Nvidia", "AMD", "Intel"], start=1):
@@ -143,7 +143,7 @@ for col_idx, vendor in enumerate(["Nvidia", "AMD", "Intel"], start=1):
         xanchor="center", yanchor="top",
     )
 
-fig1_layout = {**BASE_LAYOUT, "margin": dict(l=50, r=20, t=55, b=40)}
+fig1_layout = {**BASE_LAYOUT, "margin": dict(l=50, r=20, t=55, b=90)}
 fig1.update_layout(
     **fig1_layout,
     title=dict(
@@ -151,8 +151,8 @@ fig1.update_layout(
              "<span style='font-size:11px;color:#666'>Frame Generation (RTX 4000+ / RX 7000+) drives most of the gap</span>",
         font=dict(size=14, color=TEXT), x=0.05,
     ),
-    height=340,
-    legend=dict(orientation="h", yanchor="bottom", y=-0.26, xanchor="center", x=0.5,
+    height=400,
+    legend=dict(orientation="h", yanchor="bottom", y=-0.42, xanchor="center", x=0.5,
                 bgcolor="#ffffff", bordercolor=BORDER, borderwidth=1, font=dict(size=10, color=TEXT),
                 traceorder="normal"),
 )
@@ -375,15 +375,6 @@ for col_idx, ppd_col in enumerate(
             hovertemplate=f"<b>{vendor}</b><br>%{{x}}<br>PPD: %{{y:.3f}}<extra></extra>",
         ), row=1, col=col_idx)
 
-    # "Nvidia only" note on extreme bracket
-    fig5.add_annotation(
-        x="Extreme<br>($1500+)", y=0.005,
-        text="Nvidia only",
-        showarrow=False,
-        font=dict(size=9, color="#999999", style="italic"),
-        xref=f"x{col_idx}", yref=f"y{col_idx}",
-    )
-
 for i in range(1, 3):
     fig5.update_xaxes(gridcolor=GRID, linecolor=BORDER, tickfont=dict(color=SUBTEXT, size=10), row=1, col=i)
     fig5.update_yaxes(title_text="Avg Performance Per Dollar" if i==1 else "",
@@ -393,10 +384,10 @@ for i in range(1, 3):
 for ann in fig5.layout.annotations:
     ann.font = dict(size=12, color="#333333")
 
-fig5_layout = {**BASE_LAYOUT, "margin": dict(l=50, r=20, t=100, b=40)}
+fig5_layout = {**BASE_LAYOUT, "margin": dict(l=50, r=20, t=100, b=85)}
 fig5.update_layout(
     **fig5_layout,
-    legend=dict(orientation="h", yanchor="bottom", y=-0.22, xanchor="center", x=0.5,
+    legend=dict(orientation="h", yanchor="bottom", y=-0.45, xanchor="center", x=0.5,
                 bgcolor="#ffffff", bordercolor=BORDER, borderwidth=1,
                 font=dict(size=10, color=TEXT)),
     title=dict(
@@ -405,7 +396,7 @@ fig5.update_layout(
         font=dict(size=14, color=TEXT), x=0.05,
     ),
     barmode="group",
-    height=340,
+    height=400,
 )
 
 # ── Chart 6: MSRP vs Street Price ────────────────────────────────────────────
@@ -452,10 +443,10 @@ for col_idx, vendor in enumerate(["Nvidia", "AMD", "Intel"], start=1):
 fig6.update_xaxes(tickfont=dict(size=9, color=SUBTEXT), tickangle=-30, gridcolor=GRID, linecolor=BORDER)
 fig6.update_yaxes(title_text="Native PPD", title_font=dict(size=10, color=SUBTEXT),
                   gridcolor=GRID, linecolor=BORDER, tickfont=dict(color=SUBTEXT), row=1, col=1)
-fig6_layout = {**BASE_LAYOUT, "margin": dict(l=40, r=20, t=45, b=35)}
+fig6_layout = {**BASE_LAYOUT, "margin": dict(l=40, r=20, t=45, b=75)}
 fig6.update_layout(
     **fig6_layout,
-    legend=dict(orientation="h", yanchor="bottom", y=-0.30, xanchor="center", x=0.5,
+    legend=dict(orientation="h", yanchor="bottom", y=-0.52, xanchor="center", x=0.5,
                 bgcolor="#ffffff", bordercolor=BORDER, borderwidth=1, font=dict(size=9, color=TEXT)),
     title=dict(
         text="<b>MSRP vs What People Actually Paid: How the Value Story Changes</b><br>"
@@ -614,6 +605,7 @@ html = f"""<!DOCTYPE html>
     align-items: center;
     gap: 8px;
     margin-bottom: 10px;
+    width: fit-content;
   }}
   .tab-label {{
     font-size: 10.5px;
@@ -645,11 +637,35 @@ html = f"""<!DOCTYPE html>
   .tab-content.active  {{ display: block; }}
   .tab-content > div   {{ width: 100%; }}
 
+  /* ── Glossary ── */
+  .glossary-row {{
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 10px;
+    margin-top: 10px;
+  }}
+  .glossary-card {{ padding: 12px 16px !important; }}
+  .glossary-title {{
+    font-size: 10px; font-weight: 700; color: #aaa;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    margin-bottom: 9px;
+  }}
+  .glossary-grid {{
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 5px 14px;
+    align-items: baseline;
+  }}
+  .gt {{ font-size: 11.5px; font-weight: 600; color: #333; white-space: nowrap; }}
+  .gd {{ font-size: 11px; color: #777; }}
+
   /* ── Responsive ── */
   @media (max-width: 860px) {{
-    .main-charts {{ grid-template-columns: 1fr; }}
-    .stats       {{ grid-template-columns: repeat(2, 1fr); }}
-    .header      {{ flex-direction: column; gap: 4px; }}
+    .main-charts   {{ grid-template-columns: 1fr; }}
+    .stats         {{ grid-template-columns: repeat(2, 1fr); }}
+    .header        {{ flex-direction: column; gap: 4px; }}
+    .glossary-row  {{ grid-template-columns: 1fr; }}
+    .tab-bar       {{ width: 100%; }}
   }}
 </style>
 </head>
@@ -701,6 +717,28 @@ html = f"""<!DOCTYPE html>
     <div class="tab-content active" id="chart-prices">{d2}</div>
     <div class="tab-content"        id="chart-vram"  >{d7}</div>
     <div class="tab-content"        id="chart-street">{d6}</div>
+  </div>
+</div>
+
+<!-- Glossary -->
+<div class="glossary-row">
+  <div></div>
+  <div class="card glossary-card">
+    <div class="glossary-title">How to read this dashboard</div>
+    <div class="glossary-grid">
+      <span class="gt">PPD</span>
+      <span class="gd">Performance Per Dollar — perf score ÷ 2024-adjusted launch price</span>
+      <span class="gt">Native PPD</span>
+      <span class="gd">Raw rasterisation only, zero AI assistance</span>
+      <span class="gt">Effective PPD</span>
+      <span class="gd">Native PPD × upscaling boost × frame generation multiplier</span>
+      <span class="gt">Frame Gen</span>
+      <span class="gd">AI-synthesised intermediate frames (RTX 4000+ · RX 7000+)</span>
+      <span class="gt">MSRP</span>
+      <span class="gd">Manufacturer list price at launch</span>
+      <span class="gt">Street price</span>
+      <span class="gd">Avg price buyers actually paid, tracked by Tom's Hardware &amp; Hardware Unboxed</span>
+    </div>
   </div>
 </div>
 
