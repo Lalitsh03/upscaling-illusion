@@ -13,11 +13,12 @@ GPU manufacturers have spent the last three generations marketing AI upscaling a
 
 But strip out the AI-generated frames and ask what the hardware itself delivers: **has real Performance Per Dollar (PPD — how much gaming performance you get per dollar spent) improved, stagnated, or declined?**
 
-This project investigates three angles:
+This project investigates four angles:
 
 1. **The core divergence** — how much of the generational PPD improvement across Nvidia RTX 2000–5000, AMD RX 5000–9000, and Intel Arc A–B is raw silicon progress vs AI-assisted frame injection?
 2. **CPU vs GPU trajectory** — did GPU raw performance growth slow relative to CPUs over the same period, quietly pushing the industry toward AI workarounds instead of better hardware?
 3. **AMD brand halo** — when AMD dominated the CPU market with Ryzen (2019–2022), did that translate into GPU market share gains? Or did Nvidia's AI ecosystem hold the line regardless?
+4. **Same-price value** — at the same budget, which brand delivers more raw performance per dollar? Flagship-vs-flagship comparisons are useful but incomplete: AMD's most expensive GPU costs roughly half of Nvidia's most expensive GPU. Price bracket analysis asks the fairer question.
 
 ---
 
@@ -62,6 +63,26 @@ Effective PPD with upscaling and frame generation tells a very different story:
 So while raw performance roughly doubled, you are paying 1.4× more in real purchasing power to get there. AMD moved in the opposite direction as their inflation-adjusted flagship prices fell ~18% while native PPD improved by ~1.7×.
 
 ![Price Trend Chart](data/processed/chart_price_analysis.png)
+
+### Flagship vs flagship tells part of the story — same-price tells the rest
+
+The flagship price trend above compares each brand's best product over time and is useful for tracking how the top-end market has moved. But it has a limit: AMD's flagship RX 9070 XT launched at ~$999 while Nvidia's flagship RTX 5090 launched at $1,999. These are not the same product competing for the same buyer.
+
+Comparing within price brackets gives the fairer picture — what does each brand actually offer a buyer with a fixed budget:
+
+| Price bracket | Native PPD winner | Effective PPD winner (with FG) | Notes |
+|--------------|------------------|-------------------------------|-------|
+| Budget (<$450) | **Intel** | **Intel** | Strongest raw silicon value; smaller upscaling ecosystem limits FG gains |
+| Mid ($450–700) | **AMD** | **AMD** | Consistently better native PPD than Nvidia at the same price point |
+| High ($700–1100) | **AMD** | **Nvidia** | AMD leads on raw silicon; DLSS + Frame Gen swings effective PPD to Nvidia |
+| Premium ($1100–1500) | **AMD** | **Nvidia** | Same pattern — Nvidia's software ecosystem closes the raw gap |
+| Extreme ($1500+) | **Nvidia only** | **Nvidia only** | AMD does not field a product here — which is itself a data point |
+
+The Extreme bracket ($1500+) immediately makes the fairness problem visible: Nvidia occupies it alone. AMD choosing not to compete at that price point is a business decision, not a capability ceiling — but it does mean headline flagship comparisons (RTX 5090 vs RX 9070 XT) are comparing products from entirely different market positions.
+
+The pattern across brackets also connects directly back to the AI upscaling finding: at the budget and mid tier, where frame generation is less impactful and DLSS support in games is less critical, AMD and Intel deliver better raw value. At the high end, Nvidia's DLSS ecosystem advantage and frame generation maturity are strongest — which helps justify the price premium in effective PPD terms even where raw silicon value does not.
+
+![Price Bracket Showdown](data/processed/chart_price_bracket.png)
 
 ### Generational leaps are getting smaller in raw terms
 

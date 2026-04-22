@@ -311,6 +311,102 @@ fig4.update_layout(
     height=400,
 )
 
+# ── Chart 5: Price Bracket Showdown ──────────────────────────────────────────
+import numpy as np
+
+cuts   = [0, 450, 700, 1100, 1500, float("inf")]
+blabels = ["Budget<br>(<$450)", "Mid<br>($450–700)", "High<br>($700–1100)",
+           "Premium<br>($1100–1500)", "Extreme<br>($1500+)"]
+
+gpus["price_bracket"] = pd.cut(
+    gpus["launch_price_2024_adj"], bins=cuts,
+    labels=blabels, right=False
+)
+
+bracket_agg = (
+    gpus.groupby(["price_bracket","vendor"], observed=True)
+    [["perf_per_dollar_native","perf_per_dollar_effective_with_fg"]]
+    .mean().reset_index()
+)
+bracket_counts = (
+    gpus.groupby(["price_bracket","vendor"], observed=True)
+    .size().reset_index(name="n_gpus")
+)
+bracket_agg = bracket_agg.merge(bracket_counts, on=["price_bracket","vendor"])
+
+fig5 = make_subplots(
+    rows=1, cols=2,
+    subplot_titles=[
+        "<b>Native rasterisation only — no AI</b>",
+        "<b>Effective PPD with upscaling + frame gen</b>",
+    ],
+    horizontal_spacing=0.10,
+)
+
+for col_idx, ppd_col in enumerate(
+    ["perf_per_dollar_native", "perf_per_dollar_effective_with_fg"], start=1
+):
+    for vi, vendor in enumerate(["Nvidia", "AMD", "Intel"]):
+        sub = bracket_agg[bracket_agg["vendor"] == vendor]
+        heights, texts, customdata = [], [], []
+        for lbl in blabels:
+            row = sub[sub["price_bracket"] == lbl]
+            if len(row):
+                h = row[ppd_col].values[0]
+                n = row["n_gpus"].values[0]
+            else:
+                h = None
+                n = 0
+            heights.append(h)
+            texts.append(f"n={n}" if n else "")
+            customdata.append(n)
+
+        fig5.add_trace(go.Bar(
+            x=blabels, y=heights,
+            name=vendor,
+            marker_color=VENDOR_COLOR[vendor],
+            opacity=0.88,
+            text=texts,
+            textposition="outside",
+            textfont=dict(size=9, color="#666666"),
+            legendgroup=vendor,
+            showlegend=(col_idx == 1),
+            hovertemplate=f"<b>{vendor}</b><br>%{{x}}<br>PPD: %{{y:.3f}}<extra></extra>",
+        ), row=1, col=col_idx)
+
+    # "Nvidia only" note on extreme bracket
+    fig5.add_annotation(
+        x="Extreme<br>($1500+)", y=0.005,
+        text="Nvidia only",
+        showarrow=False,
+        font=dict(size=9, color="#999999", style="italic"),
+        xref=f"x{col_idx}", yref=f"y{col_idx}",
+    )
+
+for i in range(1, 3):
+    fig5.update_xaxes(gridcolor=GRID, linecolor=BORDER, tickfont=dict(color=SUBTEXT, size=10), row=1, col=i)
+    fig5.update_yaxes(title_text="Avg Performance Per Dollar" if i==1 else "",
+                      gridcolor=GRID, linecolor=BORDER, tickfont=dict(color=SUBTEXT), row=1, col=i)
+
+# Colour subplot titles
+for ann in fig5.layout.annotations:
+    ann.font = dict(size=12, color="#333333")
+
+fig5_layout = {**BASE_LAYOUT, "margin": dict(l=50, r=20, t=90, b=50)}
+fig5.update_layout(
+    **fig5_layout,
+    legend=dict(orientation="h", yanchor="bottom", y=-0.18, xanchor="center", x=0.5,
+                bgcolor="#ffffff", bordercolor=BORDER, borderwidth=1,
+                font=dict(size=11, color=TEXT)),
+    title=dict(
+        text="<b>Same-Price Showdown: What Does Each Brand Give You at the Same Budget?</b><br>"
+             "<span style='font-size:11px;color:#666'>Flagship-vs-flagship comparisons are incomplete — AMD's most expensive GPU costs half of Nvidia's most expensive</span>",
+        font=dict(size=14, color=TEXT), x=0.05,
+    ),
+    barmode="group",
+    height=440,
+)
+
 # ── Render to HTML ────────────────────────────────────────────────────────────
 def fig_to_div(fig):
     return fig.to_html(full_html=False, include_plotlyjs=False, config={"responsive": True})
@@ -319,6 +415,7 @@ d1 = fig_to_div(fig1)
 d2 = fig_to_div(fig2)
 d3 = fig_to_div(fig3)
 d4 = fig_to_div(fig4)
+d5 = fig_to_div(fig5)
 
 html = f"""<!DOCTYPE html>
 <html lang="en">
@@ -401,6 +498,9 @@ html = f"""<!DOCTYPE html>
 
 <div class="grid row-full" style="margin-bottom:16px">
   <div class="card">{d1}</div>
+</div>
+<div class="grid row-full" style="margin-bottom:16px">
+  <div class="card">{d5}</div>
 </div>
 <div class="grid row-split" style="margin-bottom:16px">
   <div class="card">{d2}</div>
