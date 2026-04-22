@@ -330,6 +330,7 @@ Using a single consistent source means the relative values within the dataset ar
 ### Other constraints
 
 - **Upscaling multipliers are generation averages** — per-game variance for DLSS/FSR/XeSS can swing 15–25% depending on the title, so individual game results will differ from the averages used here
+- **FSR 4 is under-represented** — AMD's upscaling has improved significantly with FSR 4 (released with the RX 9000 / RDNA 4 series). Early head-to-head tests show it closing the gap with DLSS 3 meaningfully, but stable cross-game benchmark data was not yet available at the time of analysis. The FSR 4.x multipliers used here are conservative estimates; real-world performance may be higher as more titles add native FSR 4 support and driver optimisation matures
 - **Frame generation and input latency** — the FPS numbers frame generation produces are real, but they come with added input latency that is not captured in any performance index. A competitive or latency-sensitive player may find frame-generated FPS less useful than native FPS at the same number
 - **Market share estimates are approximate** — figures sourced from Jon Peddie Research quarterly estimates and Steam Hardware Survey composites; useful for trend direction, not precise percentages
 - **Correlation ≠ causation** — especially in the brand halo section. The chart shows what happened to AMD GPU share as CPU share moved; it does not prove any causal mechanism
@@ -352,6 +353,7 @@ This is not a reason to ignore the laptop market — it is a reason why a dedica
 | **Per-game upscaling variance** | The generation-average multipliers used here hide significant title-to-title variance in DLSS/FSR/XeSS quality; a game-level breakdown would be more precise |
 | **Input latency dimension** | Frame generation inflates FPS but increases input latency — adding a latency-adjusted PPD metric would give a more complete picture for competitive players |
 | **RTX 5000 / RX 9000 live data** | The latest generation data in this project is based on launch benchmarks; updating with post-launch driver-optimised numbers over time would test whether the FG ratio holds |
+| **FSR 4 head-to-head analysis** | FSR 4 is AMD's first neural upscaler and early results suggest it meaningfully closes the gap with DLSS 3 — a dedicated comparison once stable multi-game data exists would update the effective PPD picture for AMD's newest GPUs |
 | **Regional pricing** | GPU prices vary significantly by market; extending the inflation adjustment to non-USD markets (EU, India, SEA) would make the value analysis globally relevant |
 
 ---
@@ -377,6 +379,8 @@ Raw GPU performance roughly doubled over 7 years across all three vendors. That 
 The frame generation story is the most important finding. Before 2022, upscaling added a modest 1.1–1.3× boost — a real quality improvement. After 2022, frame generation pushed the effective multiplier to 1.65–2.0×, which is what drives the impressive generational comparison numbers manufacturers put in their marketing. Strip it out, and the hardware improvements are solid but unspectacular.
 
 The AMD brand halo question has no clean answer. CPU dominance did not translate to immediate GPU share gains but the opposite happened. AMD's GPU recovery from 2022 onwards leaves open whether the groundwork laid during the Ryzen era contributed later, alongside competitive hardware. The data alone cannot resolve that.
+
+One thing the data does not fully capture is how fast AMD's upscaling has improved. FSR 1 and 2 were widely criticised for image quality. FSR 3 closed the gap noticeably. FSR 4, released with RDNA 4, brings a neural model (running on the dedicated AI accelerators on RX 9000 GPUs) that early testing puts genuinely close to DLSS 3 in image quality. Stable cross-game data was not available to quantify this properly, so the multipliers in this analysis are conservative for AMD's newest generation. If that trajectory holds, the effective PPD gap between AMD and Nvidia at the high end could narrow more than this dataset currently shows.
 
 The overall picture: the technology is delivering more performance per dollar, but the gains are increasingly coming from software and AI rather than from the silicon itself and prices have moved upward to capture much of that value back from the consumer.
 
