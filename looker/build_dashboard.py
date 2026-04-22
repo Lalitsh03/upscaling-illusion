@@ -203,7 +203,7 @@ fig2_layout = {**BASE_LAYOUT, "margin": dict(l=40, r=20, t=45, b=35)}
 fig2.update_layout(
     **fig2_layout,
     legend=dict(bgcolor="#ffffff", bordercolor=BORDER, borderwidth=1, font=dict(size=9, color=TEXT)),
-    title=dict(text="<b>Flagship GPU Launch Prices — 2024-Adjusted USD</b>",
+    title=dict(text="<b>Flagship GPU Launch Prices · 2024-Adjusted USD</b>",
                font=dict(size=13, color=TEXT), x=0.05),
     xaxis=dict(title="Launch Year", gridcolor=GRID, linecolor=BORDER, tickfont=dict(color=SUBTEXT)),
     yaxis=dict(title="Price (2024 USD)", tickprefix="$", tickformat=",",
@@ -260,7 +260,7 @@ fig3.update_layout(
     **BASE_LAYOUT,
     legend=LEGEND_DEFAULT,
     title=dict(
-        text="<b>CPU vs GPU Performance Growth — Flagship Tier</b><br>"
+        text="<b>CPU vs GPU Performance Growth · Flagship Tier</b><br>"
              "<span style='font-size:11px;color:#666'>Solid = GPU (raster) · Dashed = CPU (single-thread) · Each re-indexed to own 2019 = 100</span>",
         font=dict(size=14, color=TEXT), x=0.05,
     ),
@@ -359,27 +359,17 @@ for col_idx, ppd_col in enumerate(
 ):
     for vi, vendor in enumerate(["Nvidia", "AMD", "Intel"]):
         sub = bracket_agg[bracket_agg["vendor"] == vendor]
-        heights, texts, customdata = [], [], []
+        heights = []
         for lbl in blabels:
             row = sub[sub["price_bracket"] == lbl]
-            if len(row):
-                h = row[ppd_col].values[0]
-                n = row["n_gpus"].values[0]
-            else:
-                h = None
-                n = 0
+            h = row[ppd_col].values[0] if len(row) else None
             heights.append(h)
-            texts.append(f"n={n}" if n else "")
-            customdata.append(n)
 
         fig5.add_trace(go.Bar(
             x=blabels, y=heights,
             name=vendor,
             marker_color=VENDOR_COLOR[vendor],
             opacity=0.88,
-            text=texts,
-            textposition="outside",
-            textfont=dict(size=9, color="#666666"),
             legendgroup=vendor,
             showlegend=(col_idx == 1),
             hovertemplate=f"<b>{vendor}</b><br>%{{x}}<br>PPD: %{{y:.3f}}<extra></extra>",
@@ -403,7 +393,7 @@ for i in range(1, 3):
 for ann in fig5.layout.annotations:
     ann.font = dict(size=12, color="#333333")
 
-fig5_layout = {**BASE_LAYOUT, "margin": dict(l=50, r=20, t=70, b=40)}
+fig5_layout = {**BASE_LAYOUT, "margin": dict(l=50, r=20, t=100, b=40)}
 fig5.update_layout(
     **fig5_layout,
     legend=dict(orientation="h", yanchor="bottom", y=-0.22, xanchor="center", x=0.5,
@@ -411,7 +401,7 @@ fig5.update_layout(
                 font=dict(size=10, color=TEXT)),
     title=dict(
         text="<b>Same-Price Showdown: What Does Each Brand Give You at the Same Budget?</b><br>"
-             "<span style='font-size:11px;color:#666'>AMD's most expensive GPU costs half of Nvidia's — flagship-vs-flagship misses the real comparison</span>",
+             "<span style='font-size:11px;color:#666'>AMD's most expensive GPU costs half of Nvidia's; flagship vs flagship misses the real comparison</span>",
         font=dict(size=14, color=TEXT), x=0.05,
     ),
     barmode="group",
@@ -468,7 +458,7 @@ fig6.update_layout(
     legend=dict(orientation="h", yanchor="bottom", y=-0.30, xanchor="center", x=0.5,
                 bgcolor="#ffffff", bordercolor=BORDER, borderwidth=1, font=dict(size=9, color=TEXT)),
     title=dict(
-        text="<b>MSRP vs What People Actually Paid — How the Value Story Changes</b><br>"
+        text="<b>MSRP vs What People Actually Paid: How the Value Story Changes</b><br>"
              "<span style='font-size:11px;color:#666'>Dashed = MSRP  ·  Solid = estimated average street price  ·  RTX 3000 gap is largest</span>",
         font=dict(size=13, color=TEXT), x=0.05,
     ),
@@ -531,6 +521,11 @@ fig7.update_layout(
     height=250,
 )
 
+# ── Strip grid lines from every figure ───────────────────────────────────────
+for _fig in [fig1, fig2, fig3, fig4, fig5, fig6, fig7]:
+    _fig.update_xaxes(showgrid=False, zeroline=False)
+    _fig.update_yaxes(showgrid=False, zeroline=False)
+
 # ── Render to HTML ────────────────────────────────────────────────────────────
 def fig_to_div(fig):
     return fig.to_html(full_html=False, include_plotlyjs=False, config={"responsive": True})
@@ -548,7 +543,7 @@ html = f"""<!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Upscaling Illusion — GPU Value Analysis 2018–2025</title>
+<title>The Upscaling Illusion: GPU Value Analysis 2018-2025</title>
 <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
 <style>
   *, *::before, *::after {{ box-sizing: border-box; margin: 0; padding: 0; }}
@@ -663,7 +658,7 @@ html = f"""<!DOCTYPE html>
 <!-- Header -->
 <div class="header">
   <h1>The Upscaling Illusion: GPU Value Analysis 2018–2025</h1>
-  <p>Did AI upscaling genuinely improve value — or did it mask stagnant hardware progress while prices rose?</p>
+  <p>Did AI upscaling genuinely improve value, or did it mask stagnant hardware progress while prices rose?</p>
 </div>
 
 <!-- Key stat callouts -->
