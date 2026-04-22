@@ -143,16 +143,17 @@ for col_idx, vendor in enumerate(["Nvidia", "AMD", "Intel"], start=1):
         xanchor="center", yanchor="top",
     )
 
+fig1_layout = {**BASE_LAYOUT, "margin": dict(l=50, r=20, t=55, b=40)}
 fig1.update_layout(
-    **BASE_LAYOUT,
+    **fig1_layout,
     title=dict(
         text="<b>The Divergence: Raw vs Effective Performance Per Dollar</b><br>"
-             "<span style='font-size:12px;color:#666'>Frame Generation (RTX 4000+ / RX 7000+) drives most of the gap</span>",
-        font=dict(size=16, color=TEXT), x=0.05,
+             "<span style='font-size:11px;color:#666'>Frame Generation (RTX 4000+ / RX 7000+) drives most of the gap</span>",
+        font=dict(size=14, color=TEXT), x=0.05,
     ),
-    height=420,
-    legend=dict(orientation="h", yanchor="bottom", y=-0.22, xanchor="center", x=0.5,
-                bgcolor="#ffffff", bordercolor=BORDER, borderwidth=1, font=dict(size=11, color=TEXT),
+    height=340,
+    legend=dict(orientation="h", yanchor="bottom", y=-0.26, xanchor="center", x=0.5,
+                bgcolor="#ffffff", bordercolor=BORDER, borderwidth=1, font=dict(size=10, color=TEXT),
                 traceorder="normal"),
 )
 fig1.update_xaxes(tickfont=dict(size=9, color=SUBTEXT), tickangle=-30, gridcolor=GRID, linecolor=BORDER)
@@ -198,15 +199,16 @@ fig2.add_hline(y=999, line_dash="dash", line_color=GREY, line_width=1.2, opacity
                annotation_text="$999 reference", annotation_position="top right",
                annotation_font=dict(color=GREY, size=10))
 
+fig2_layout = {**BASE_LAYOUT, "margin": dict(l=40, r=20, t=45, b=35)}
 fig2.update_layout(
-    **BASE_LAYOUT,
-    legend=LEGEND_DEFAULT,
+    **fig2_layout,
+    legend=dict(bgcolor="#ffffff", bordercolor=BORDER, borderwidth=1, font=dict(size=9, color=TEXT)),
     title=dict(text="<b>Flagship GPU Launch Prices — 2024-Adjusted USD</b>",
-               font=dict(size=14, color=TEXT), x=0.05),
+               font=dict(size=13, color=TEXT), x=0.05),
     xaxis=dict(title="Launch Year", gridcolor=GRID, linecolor=BORDER, tickfont=dict(color=SUBTEXT)),
     yaxis=dict(title="Price (2024 USD)", tickprefix="$", tickformat=",",
                gridcolor=GRID, linecolor=BORDER, tickfont=dict(color=SUBTEXT)),
-    height=400,
+    height=250,
 )
 
 # ── Chart 3: CPU vs GPU Growth ────────────────────────────────────────────────
@@ -401,19 +403,19 @@ for i in range(1, 3):
 for ann in fig5.layout.annotations:
     ann.font = dict(size=12, color="#333333")
 
-fig5_layout = {**BASE_LAYOUT, "margin": dict(l=50, r=20, t=90, b=50)}
+fig5_layout = {**BASE_LAYOUT, "margin": dict(l=50, r=20, t=70, b=40)}
 fig5.update_layout(
     **fig5_layout,
-    legend=dict(orientation="h", yanchor="bottom", y=-0.18, xanchor="center", x=0.5,
+    legend=dict(orientation="h", yanchor="bottom", y=-0.22, xanchor="center", x=0.5,
                 bgcolor="#ffffff", bordercolor=BORDER, borderwidth=1,
-                font=dict(size=11, color=TEXT)),
+                font=dict(size=10, color=TEXT)),
     title=dict(
         text="<b>Same-Price Showdown: What Does Each Brand Give You at the Same Budget?</b><br>"
-             "<span style='font-size:11px;color:#666'>Flagship-vs-flagship comparisons are incomplete — AMD's most expensive GPU costs half of Nvidia's most expensive</span>",
+             "<span style='font-size:11px;color:#666'>AMD's most expensive GPU costs half of Nvidia's — flagship-vs-flagship misses the real comparison</span>",
         font=dict(size=14, color=TEXT), x=0.05,
     ),
     barmode="group",
-    height=440,
+    height=340,
 )
 
 # ── Chart 6: MSRP vs Street Price ────────────────────────────────────────────
@@ -460,17 +462,17 @@ for col_idx, vendor in enumerate(["Nvidia", "AMD", "Intel"], start=1):
 fig6.update_xaxes(tickfont=dict(size=9, color=SUBTEXT), tickangle=-30, gridcolor=GRID, linecolor=BORDER)
 fig6.update_yaxes(title_text="Native PPD", title_font=dict(size=10, color=SUBTEXT),
                   gridcolor=GRID, linecolor=BORDER, tickfont=dict(color=SUBTEXT), row=1, col=1)
-fig6_layout = {**BASE_LAYOUT, "margin": dict(l=50, r=20, t=80, b=50)}
+fig6_layout = {**BASE_LAYOUT, "margin": dict(l=40, r=20, t=45, b=35)}
 fig6.update_layout(
     **fig6_layout,
-    legend=dict(orientation="h", yanchor="bottom", y=-0.22, xanchor="center", x=0.5,
-                bgcolor="#ffffff", bordercolor=BORDER, borderwidth=1, font=dict(size=11, color=TEXT)),
+    legend=dict(orientation="h", yanchor="bottom", y=-0.30, xanchor="center", x=0.5,
+                bgcolor="#ffffff", bordercolor=BORDER, borderwidth=1, font=dict(size=9, color=TEXT)),
     title=dict(
         text="<b>MSRP vs What People Actually Paid — How the Value Story Changes</b><br>"
              "<span style='font-size:11px;color:#666'>Dashed = MSRP  ·  Solid = estimated average street price  ·  RTX 3000 gap is largest</span>",
-        font=dict(size=14, color=TEXT), x=0.05,
+        font=dict(size=13, color=TEXT), x=0.05,
     ),
-    height=420,
+    height=250,
 )
 
 # ── Chart 7: VRAM by Price Bracket ───────────────────────────────────────────
@@ -513,19 +515,20 @@ fig7.add_hline(y=8, line_dash="dot", line_color="#cc3333", line_width=1.3, opaci
                annotation_text="8GB threshold", annotation_position="top right",
                annotation_font=dict(color="#cc3333", size=10))
 
+fig7_layout = {**BASE_LAYOUT, "margin": dict(l=50, r=20, t=45, b=35)}
 fig7.update_layout(
-    **BASE_LAYOUT,
-    legend=LEGEND_DEFAULT,
+    **fig7_layout,
+    legend=dict(bgcolor="#ffffff", bordercolor=BORDER, borderwidth=1, font=dict(size=9, color=TEXT)),
     title=dict(
         text="<b>VRAM per Price Bracket — What Does Each Brand Actually Give You?</b><br>"
              "<span style='font-size:11px;color:#666'>RTX 4060 Ti (8GB, $399) vs RX 7800 XT (16GB, $499) is the defining mid-range comparison</span>",
-        font=dict(size=14, color=TEXT), x=0.05,
+        font=dict(size=13, color=TEXT), x=0.05,
     ),
     barmode="group",
     xaxis=dict(gridcolor=GRID, linecolor=BORDER, tickfont=dict(color=SUBTEXT)),
     yaxis=dict(title="Average VRAM (GB)", gridcolor=GRID, linecolor=BORDER,
                tickfont=dict(color=SUBTEXT)),
-    height=420,
+    height=250,
 )
 
 # ── Render to HTML ────────────────────────────────────────────────────────────
@@ -549,93 +552,173 @@ html = f"""<!DOCTYPE html>
 <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
 <style>
   *, *::before, *::after {{ box-sizing: border-box; margin: 0; padding: 0; }}
+
   body {{
     background: #f8f9fa;
     color: #1a1a1a;
     font-family: 'Segoe UI', system-ui, sans-serif;
-    padding: 28px;
+    padding: 12px 16px;
+    min-height: 100vh;
   }}
+
+  /* ── Header ── */
   .header {{
-    margin-bottom: 28px;
-    border-left: 4px solid #76b900;
-    padding-left: 14px;
-  }}
-  .header h1 {{
-    font-size: 22px;
-    font-weight: 700;
-    color: #1a1a1a;
-    margin-bottom: 6px;
-  }}
-  .header p {{
-    font-size: 13px;
-    color: #666666;
-  }}
-  .brand-dot {{
-    display: inline-block;
-    width: 10px; height: 10px;
-    border-radius: 50%;
-    margin-right: 4px;
-    vertical-align: middle;
-  }}
-  .legend-row {{
     display: flex;
-    gap: 18px;
-    font-size: 12px;
-    color: #555;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 14px;
+    border-left: 4px solid #76b900;
+    padding-left: 12px;
+    margin-bottom: 10px;
   }}
-  .grid {{ display: grid; gap: 16px; }}
-  .row-full  {{ grid-template-columns: 1fr; }}
-  .row-split {{ grid-template-columns: 1fr 1fr; }}
-  .card {{
-    background: #ffffff;
+  .header h1 {{ font-size: 17px; font-weight: 700; color: #1a1a1a; white-space: nowrap; }}
+  .header p  {{ font-size: 11px; color: #888; }}
+
+  /* ── Stat callouts ── */
+  .stats {{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 10px;
+  }}
+  .stat {{
+    background: #fff;
     border: 1px solid #e0e0e0;
-    border-radius: 10px;
-    padding: 14px;
+    border-radius: 8px;
+    border-top: 3px solid #76b900;
+    padding: 10px 14px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }}
+  .stat:nth-child(2) {{ border-top-color: #ED1C24; }}
+  .stat:nth-child(3) {{ border-top-color: #f5a623; }}
+  .stat:nth-child(4) {{ border-top-color: #0071c5; }}
+  .stat-num  {{ font-size: 26px; font-weight: 700; line-height: 1.1; }}
+  .stat-text {{ font-size: 10.5px; color: #666; margin-top: 3px; line-height: 1.4; }}
+
+  /* ── Main charts ── */
+  .main-charts {{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 10px;
+  }}
+
+  /* ── Card ── */
+  .card {{
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 8px;
     overflow: hidden;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
   }}
   .card > div {{ width: 100%; }}
-  @media (max-width: 900px) {{
-    .row-split {{ grid-template-columns: 1fr; }}
+
+  /* ── Tab bar ── */
+  .tab-bar {{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+  }}
+  .tab-label {{
+    font-size: 10.5px;
+    font-weight: 600;
+    color: #999;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    margin-right: 2px;
+  }}
+  .tab-btn {{
+    background: #fff;
+    border: 1px solid #d8d8d8;
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-size: 12px;
+    font-family: inherit;
+    color: #555;
+    cursor: pointer;
+    transition: background 0.13s, border-color 0.13s, color 0.13s;
+    white-space: nowrap;
+  }}
+  .tab-btn:hover  {{ border-color: #76b900; color: #333; }}
+  .tab-btn.active {{ background: #76b900; border-color: #76b900; color: #fff; font-weight: 600; }}
+
+  /* ── Tab panel ── */
+  .tab-panel {{ }}
+  .tab-content         {{ display: none; }}
+  .tab-content.active  {{ display: block; }}
+  .tab-content > div   {{ width: 100%; }}
+
+  /* ── Responsive ── */
+  @media (max-width: 860px) {{
+    .main-charts {{ grid-template-columns: 1fr; }}
+    .stats       {{ grid-template-columns: repeat(2, 1fr); }}
+    .header      {{ flex-direction: column; gap: 4px; }}
   }}
 </style>
 </head>
 <body>
 
+<!-- Header -->
 <div class="header">
   <h1>The Upscaling Illusion: GPU Value Analysis 2018–2025</h1>
-  <p>Did AI upscaling genuinely improve value — or did it mask stagnant hardware progress?</p>
+  <p>Did AI upscaling genuinely improve value — or did it mask stagnant hardware progress while prices rose?</p>
 </div>
 
-<div class="legend-row">
-  <span><span class="brand-dot" style="background:#76b900"></span><strong>Nvidia</strong></span>
-  <span><span class="brand-dot" style="background:#ED1C24"></span><strong>AMD</strong></span>
-  <span><span class="brand-dot" style="background:#0071c5"></span><strong>Intel</strong></span>
-  <span style="color:#aaa">|</span>
-  <span><span class="brand-dot" style="background:#444444;border-radius:2px"></span>Raw rasterisation</span>
-  <span><span class="brand-dot" style="background:#f5a623;border-radius:2px"></span>Upscaling only</span>
-  <span><span class="brand-dot" style="background:#999;border-radius:2px;border:1px dashed #999"></span>CPU lines (dashed)</span>
+<!-- Key stat callouts -->
+<div class="stats">
+  <div class="stat">
+    <div class="stat-num" style="color:#76b900">~2×</div>
+    <div class="stat-text">native silicon PPD gain<br>Nvidia RTX 2000 → RTX 5000 · 7 years</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num" style="color:#ED1C24">+42%</div>
+    <div class="stat-text">Nvidia flagship price increase<br>inflation-adjusted 2024 dollars</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num" style="color:#f5a623">4×</div>
+    <div class="stat-text">Nvidia effective PPD with DLSS + MFG<br>half from silicon · half AI-generated frames</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num" style="color:#0071c5">+50%</div>
+    <div class="stat-text">RTX 3080 real avg cost over MSRP<br>$699 list · ~$1,050 actual · 2020–21 shortage</div>
+  </div>
 </div>
 
-<div class="grid row-full" style="margin-bottom:16px">
+<!-- Always-visible: Divergence + Price Bracket side by side -->
+<div class="main-charts">
   <div class="card">{d1}</div>
-</div>
-<div class="grid row-full" style="margin-bottom:16px">
   <div class="card">{d5}</div>
 </div>
-<div class="grid row-full" style="margin-bottom:16px">
-  <div class="card">{d6}</div>
+
+<!-- Tab bar -->
+<div class="tab-bar">
+  <span class="tab-label">Explore more →</span>
+  <button class="tab-btn active" data-tab="prices" onclick="showTab('prices')">📈 Flagship prices</button>
+  <button class="tab-btn" data-tab="vram"   onclick="showTab('vram')"  >💾 VRAM breakdown</button>
+  <button class="tab-btn" data-tab="street" onclick="showTab('street')">💰 MSRP vs actual paid</button>
 </div>
-<div class="grid row-split" style="margin-bottom:16px">
-  <div class="card">{d7}</div>
-  <div class="card">{d2}</div>
+
+<!-- Tab panel -->
+<div class="tab-panel">
+  <div class="card">
+    <div class="tab-content active" id="chart-prices">{d2}</div>
+    <div class="tab-content"        id="chart-vram"  >{d7}</div>
+    <div class="tab-content"        id="chart-street">{d6}</div>
+  </div>
 </div>
-<div class="grid row-split" style="margin-bottom:16px">
-  <div class="card">{d3}</div>
-  <div class="card">{d4}</div>
-</div>
+
+<script>
+function showTab(name) {{
+  document.querySelectorAll('.tab-content').forEach(function(el) {{ el.classList.remove('active'); }});
+  document.querySelectorAll('.tab-btn').forEach(function(el) {{ el.classList.remove('active'); }});
+  document.getElementById('chart-' + name).classList.add('active');
+  document.querySelector('[data-tab="' + name + '"]').classList.add('active');
+  // Trigger Plotly to resize to fit the newly visible container
+  window.dispatchEvent(new Event('resize'));
+}}
+</script>
 
 </body>
 </html>"""
