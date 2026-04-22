@@ -180,6 +180,8 @@ With clean data in the database, the analysis notebook connected to SQLite, pull
 
 Nine standalone queries in `sql/02_analysis_queries.sql` cover every angle of the project ranging from the headline divergence table to a value efficiency score that rates each GPU against its generation average. These were written to be run directly in DBeaver against `data/gpu_analysis.db` with no additional setup.
 
+**Note on pipeline role:** The SQL queries are not called by any notebook or script — they are a standalone analytical SQL layer, intentionally separate from the Python pipeline. Their purpose is twofold: they provide a second path to every key finding (useful for validation) and they demonstrate that the same analysis can be expressed cleanly in SQL for any context where a Python environment is not available. The Python notebooks are the primary pipeline; the SQL is an independent, query-by-query equivalent.
+
 ---
 
 ## Project Structure
@@ -266,6 +268,8 @@ PPD (with FG) = perf_score_native × upscaling_boost_with_fg / launch_price_2024
 | XeSS 1.x | 1.20× | 1.20× |
 | XeSS 2.x | 1.35× | 1.35× |
 
+*Sources: multipliers are averages derived from Digital Foundry and Hardware Unboxed frame generation benchmark roundups (2022–2025), cross-referenced against multiple game titles at 1440p quality mode. Per-game variance of ±10–15% is expected; these figures represent mid-range quality-mode estimates.*
+
 Frame generation is tracked separately (`fg_inflation_factor`) because it generates interpolated frames rather than rendering them which is inflating FPS without improving input latency.
 
 ### Inflation Adjustment
@@ -330,6 +334,7 @@ Using a single consistent source means the relative values within the dataset ar
 ### Other constraints
 
 - **Upscaling multipliers are generation averages** — per-game variance for DLSS/FSR/XeSS can swing 15–25% depending on the title, so individual game results will differ from the averages used here
+- **All prices are MSRP at launch, not street prices** — this is a real analytical weakness for the RTX 3000 generation in particular. Cards launched at MSRP in late 2020 and 2021 and immediately sold for 2–3× that price on the open market due to cryptocurrency mining demand and COVID-era supply shortages. An RTX 3060 nominally launched at $329 but almost nobody bought one for $329. Using MSRP flatters Nvidia's value story for that generation: if real transaction prices were used, RTX 3000-era PPD would look considerably worse. Reliable historical street price data across all SKUs does not exist in a clean, comparable form, so MSRP is used throughout with this caveat noted explicitly
 - **FSR 4 is under-represented** — AMD's upscaling has improved significantly with FSR 4 (released with the RX 9000 / RDNA 4 series). Early head-to-head tests show it closing the gap with DLSS 3 meaningfully, but stable cross-game benchmark data was not yet available at the time of analysis. The FSR 4.x multipliers used here are conservative estimates; real-world performance may be higher as more titles add native FSR 4 support and driver optimisation matures. AMD subsequently released **FSR 4.1 in March 2026** — reviewers are calling it an even larger step up and a genuine like-for-like competitor to Nvidia's upscaling; it was not possible to include it here as no reliable multi-game benchmark data existed at time of writing
 - **Frame generation and input latency** — the FPS numbers frame generation produces are real, but they come with added input latency that is not captured in any performance index. A competitive or latency-sensitive player may find frame-generated FPS less useful than native FPS at the same number
 - **Market share estimates are approximate** — figures sourced from Jon Peddie Research quarterly estimates and Steam Hardware Survey composites; useful for trend direction, not precise percentages
@@ -354,6 +359,8 @@ This is not a reason to ignore the laptop market — it is a reason why a dedica
 | **Input latency dimension** | Frame generation inflates FPS but increases input latency — adding a latency-adjusted PPD metric would give a more complete picture for competitive players |
 | **RTX 5000 / RX 9000 live data** | The latest generation data in this project is based on launch benchmarks; updating with post-launch driver-optimised numbers over time would test whether the FG ratio holds |
 | **FSR 4.1 head-to-head analysis** | FSR 4.1 (March 2026) is being called a genuine DLSS competitor by reviewers — a dedicated comparison once stable multi-game benchmark data is available would update the effective PPD picture for AMD considerably; FSR 4 (included here) was the starting point, FSR 4.1 appears to be where it gets truly competitive |
+| **VRAM analysis** | VRAM capacity has become a critical purchasing factor (RTX 4060 8GB vs RX 7800 XT 16GB at similar price points) but is entirely absent from the current PPD metric — a VRAM-per-dollar or a VRAM-adjusted value score would add a dimension the current analysis misses |
+| **Street price vs MSRP** | RTX 3000-era cards sold for 2–3× MSRP during the crypto/COVID shortage; replacing nominal MSRP with historical street prices for that generation would give a more accurate PPD picture for 2020–2022 |
 | **Regional pricing** | GPU prices vary significantly by market; extending the inflation adjustment to non-USD markets (EU, India, SEA) would make the value analysis globally relevant |
 
 ---
@@ -365,7 +372,7 @@ This is not a reason to ignore the laptop market — it is a reason why a dedica
 | Data wrangling | Python 3.13, Pandas, NumPy |
 | Database | SQLite, DBeaver |
 | Analysis & charts | Matplotlib, Seaborn, Plotly |
-| Dashboard | Power BI Desktop |
+| Dashboard | Plotly (interactive HTML — `looker/dashboard.html`) |
 | Version control | Git, GitHub |
 
 ---
