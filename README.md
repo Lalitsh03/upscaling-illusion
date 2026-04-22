@@ -84,6 +84,36 @@ The pattern across brackets also connects directly back to the AI upscaling find
 
 ![Price Bracket Showdown](data/processed/chart_price_bracket.png)
 
+### MSRP vs what people actually paid — the RTX 3000 generation looks very different
+
+Using MSRP (the official launch price) is standard but misleading for 2020–2022. The RTX 3000 and RX 6000 generations launched into a cryptocurrency mining boom and COVID supply chain collapse. Cards sold for 20–50% above MSRP on average:
+
+| GPU | MSRP | Avg street price | Premium |
+|-----|------|-----------------|---------|
+| RTX 3080 | $699 | ~$1,050 | +50% |
+| RTX 3070 | $499 | ~$750 | +50% |
+| RTX 3060 Ti | $399 | ~$600 | +50% |
+| RX 6800 XT | $649 | ~$900 | +39% |
+| RX 6700 XT | $479 | ~$600 | +25% |
+
+When native PPD is recalculated using real street prices, Nvidia's RTX 3000 generation looks significantly worse. The post-shortage RTX 4000 and RX 7000 generations, which sold near MSRP, benefit from the comparison. AMD's RX 6000 was affected too, but less severely — its RX 6800 XT and RX 6900 XT premiums were smaller because RDNA 2 was less efficient for crypto mining than Ampere.
+
+![MSRP vs Street Price](data/processed/chart_msrp_vs_street.png)
+
+### VRAM — the dimension the PPD metric misses
+
+VRAM capacity has become a decisive purchase factor at 1440p and above. Modern games with high-resolution texture packs routinely exceed 8GB at 1440p. The comparison that defines the current mid-range:
+
+| GPU | MSRP | VRAM | Value verdict |
+|-----|------|------|--------------|
+| RTX 4060 Ti | $399 | 8GB | Performance competitive; VRAM is a real concern at 1440p |
+| RX 7800 XT | $499 | 16GB | $100 more, 2× the VRAM — widely considered the better mid-range buy |
+| RTX 3060 | $329 | 12GB | Two generations older Nvidia card had more VRAM than the RTX 4060 |
+
+The VRAM per price bracket analysis shows AMD and Intel consistently offering more VRAM at the mid and high tiers. At the extreme bracket ($1500+), Nvidia's RTX 5090 leads with 32GB. The 8GB cap on the RTX 4060 and RTX 4060 Ti at their price points is the most widely criticised VRAM decision in the dataset.
+
+![VRAM by Price Bracket](data/processed/chart_vram_by_bracket.png)
+
 ### Generational leaps are getting smaller in raw terms
 
 The RTX 4000 → RTX 5000 native PPD improvement (~26%) was the smallest single-generation jump in the dataset. CPUs and GPUs grew at roughly comparable rates in raw terms but GPU manufacturers leaned into AI features to make each generation feel more significant than the silicon alone justified.
@@ -180,7 +210,7 @@ With clean data in the database, the analysis notebook connected to SQLite, pull
 
 Nine standalone queries in `sql/02_analysis_queries.sql` cover every angle of the project ranging from the headline divergence table to a value efficiency score that rates each GPU against its generation average. These were written to be run directly in DBeaver against `data/gpu_analysis.db` with no additional setup.
 
-**Note on pipeline role:** The SQL queries are not called by any notebook or script — they are a standalone analytical SQL layer, intentionally separate from the Python pipeline. Their purpose is twofold: they provide a second path to every key finding (useful for validation) and they demonstrate that the same analysis can be expressed cleanly in SQL for any context where a Python environment is not available. The Python notebooks are the primary pipeline; the SQL is an independent, query-by-query equivalent.
+Open `data/gpu_analysis.db` in DBeaver and run any query from `sql/02_analysis_queries.sql` directly.
 
 ---
 
@@ -268,7 +298,7 @@ PPD (with FG) = perf_score_native × upscaling_boost_with_fg / launch_price_2024
 | XeSS 1.x | 1.20× | 1.20× |
 | XeSS 2.x | 1.35× | 1.35× |
 
-*Sources: multipliers are averages derived from Digital Foundry and Hardware Unboxed frame generation benchmark roundups (2022–2025), cross-referenced against multiple game titles at 1440p quality mode. Per-game variance of ±10–15% is expected; these figures represent mid-range quality-mode estimates.*
+*Sources: multiplier values are based on published frame generation and upscaling benchmarks (primarily Digital Foundry and Hardware Unboxed, 2022–2025). These figures are representative mid-range estimates at quality mode — per-game variance of ±10–15% is expected and individual titles may sit outside this range.*
 
 Frame generation is tracked separately (`fg_inflation_factor`) because it generates interpolated frames rather than rendering them which is inflating FPS without improving input latency.
 
@@ -372,7 +402,7 @@ This is not a reason to ignore the laptop market — it is a reason why a dedica
 | Data wrangling | Python 3.13, Pandas, NumPy |
 | Database | SQLite, DBeaver |
 | Analysis & charts | Matplotlib, Seaborn, Plotly |
-| Dashboard | Plotly (interactive HTML — `looker/dashboard.html`) |
+| Dashboard | Plotly — `looker/dashboard.html` (open in any browser) |
 | Version control | Git, GitHub |
 
 ---

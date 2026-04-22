@@ -66,6 +66,17 @@ cpu_sh  = cpu_sh.groupby("year")[["amd_cpu_share","intel_cpu_share"]].mean().res
 
 gen_agg["fg_ratio"] = (gen_agg["avg_ppd_with_fg"] / gen_agg["avg_ppd_native"]).round(2)
 
+# ── Street price enrichment ───────────────────────────────────────────────────
+import numpy as np
+seed_raw = pd.read_csv(ROOT / "data" / "raw" / "gpu_specs_seed.csv")
+gpus = gpus.merge(seed_raw[["gpu_name","street_price_usd"]], on="gpu_name", how="left")
+gpus["street_price_2024_adj"] = (
+    gpus["street_price_usd"] * (gpus["launch_price_2024_adj"] / gpus["launch_price_usd"])
+).round(2)
+gpus["ppd_street_native"] = (
+    gpus["perf_score_native_1440p"] / gpus["street_price_2024_adj"]
+).round(5)
+
 # ── Chart 1: Divergence ───────────────────────────────────────────────────────
 # No subplot_titles here — we place vendor labels as annotations INSIDE each panel
 fig1 = make_subplots(
@@ -312,8 +323,6 @@ fig4.update_layout(
 )
 
 # ── Chart 5: Price Bracket Showdown ──────────────────────────────────────────
-import numpy as np
-
 cuts   = [0, 450, 700, 1100, 1500, float("inf")]
 blabels = ["Budget<br>(<$450)", "Mid<br>($450–700)", "High<br>($700–1100)",
            "Premium<br>($1100–1500)", "Extreme<br>($1500+)"]
@@ -407,6 +416,118 @@ fig5.update_layout(
     height=440,
 )
 
+# ── Chart 6: MSRP vs Street Price ────────────────────────────────────────────
+gen_street = gpus.groupby(["vendor","generation"]).agg(
+    gen_launch_year = ("launch_year", "min"),
+    ppd_msrp        = ("perf_per_dollar_native", "mean"),
+    ppd_street      = ("ppd_street_native", "mean"),
+).reset_index().round(5)
+
+fig6 = make_subplots(rows=1, cols=3, shared_yaxes=False, horizontal_spacing=0.08)
+
+for col_idx, vendor in enumerate(["Nvidia", "AMD", "Intel"], start=1):
+    brand_col = VENDOR_COLOR[vendor]
+    sub = gen_street[gen_street["vendor"] == vendor].sort_values("gen_launch_year")
+    show_leg = (col_idx == 1)
+
+    fig6.add_trace(go.Scatter(
+        x=sub["generation"], y=sub["ppd_msrp"],
+        mode="lines+markers", name="MSRP price",
+        line=dict(color=brand_col, width=2, dash="dash"),
+        marker=dict(size=7, symbol="circle"),
+        opacity=0.55,
+        legendgroup="msrp", showlegend=show_leg,
+        hovertemplate="<b>%{x}</b><br>MSRP PPD: %{y:.3f}<extra></extra>",
+    ), row=1, col=col_idx)
+
+    fig6.add_trace(go.Scatter(
+        x=sub["generation"], y=sub["ppd_street"],
+        mode="lines+markers", name="Street price (actual)",
+        line=dict(color=brand_col, width=2.8),
+        marker=dict(size=9, symbol="square"),
+        legendgroup="street", showlegend=show_leg,
+        hovertemplate="<b>%{x}</b><br>Street PPD: %{y:.3f}<extra></extra>",
+    ), row=1, col=col_idx)
+
+    # Vendor label inside panel
+    x_paper = [0.10, 0.44, 0.78][col_idx - 1]
+    fig6.add_annotation(
+        x=x_paper, y=0.97, xref="paper", yref="paper",
+        text=f"<b>{vendor}</b>", showarrow=False,
+        font=dict(color=brand_col, size=14), xanchor="center", yanchor="top",
+    )
+
+fig6.update_xaxes(tickfont=dict(size=9, color=SUBTEXT), tickangle=-30, gridcolor=GRID, linecolor=BORDER)
+fig6.update_yaxes(title_text="Native PPD", title_font=dict(size=10, color=SUBTEXT),
+                  gridcolor=GRID, linecolor=BORDER, tickfont=dict(color=SUBTEXT), row=1, col=1)
+fig6_layout = {**BASE_LAYOUT, "margin": dict(l=50, r=20, t=80, b=50)}
+fig6.update_layout(
+    **fig6_layout,
+    legend=dict(orientation="h", yanchor="bottom", y=-0.22, xanchor="center", x=0.5,
+                bgcolor="#ffffff", bordercolor=BORDER, borderwidth=1, font=dict(size=11, color=TEXT)),
+    title=dict(
+        text="<b>MSRP vs What People Actually Paid — How the Value Story Changes</b><br>"
+             "<span style='font-size:11px;color:#666'>Dashed = MSRP  ·  Solid = estimated average street price  ·  RTX 3000 gap is largest</span>",
+        font=dict(size=14, color=TEXT), x=0.05,
+    ),
+    height=420,
+)
+
+# ── Chart 7: VRAM by Price Bracket ───────────────────────────────────────────
+cuts_v  = [0, 450, 700, 1100, 1500, float("inf")]
+blbls_v = ["Budget<br>(<$450)", "Mid<br>($450–700)", "High<br>($700–1100)",
+           "Premium<br>($1100–1500)", "Extreme<br>($1500+)"]
+
+gpus["price_bracket_v"] = pd.cut(gpus["launch_price_2024_adj"], bins=cuts_v,
+                                  labels=blbls_v, right=False)
+
+vram_bracket = (
+    gpus.groupby(["price_bracket_v","vendor"], observed=True)["vram_gb"]
+    .mean().reset_index()
+)
+
+fig7 = go.Figure()
+
+for vi, vendor in enumerate(["Nvidia","AMD","Intel"]):
+    sub = vram_bracket[vram_bracket["vendor"] == vendor]
+    heights, labels_ann = [], []
+    for lbl in blbls_v:
+        row = sub[sub["price_bracket_v"] == lbl]
+        h = round(row["vram_gb"].values[0], 1) if len(row) else None
+        heights.append(h)
+        labels_ann.append(f"{h:.0f}GB" if h else "")
+
+    fig7.add_trace(go.Bar(
+        x=blbls_v, y=heights,
+        name=vendor,
+        marker_color=VENDOR_COLOR[vendor],
+        opacity=0.88,
+        text=labels_ann,
+        textposition="outside",
+        textfont=dict(size=10, color="#444444"),
+        hovertemplate=f"<b>{vendor}</b><br>%{{x}}<br>Avg VRAM: %{{y:.1f}}GB<extra></extra>",
+    ))
+
+# 8GB threshold line
+fig7.add_hline(y=8, line_dash="dot", line_color="#cc3333", line_width=1.3, opacity=0.6,
+               annotation_text="8GB threshold", annotation_position="top right",
+               annotation_font=dict(color="#cc3333", size=10))
+
+fig7.update_layout(
+    **BASE_LAYOUT,
+    legend=LEGEND_DEFAULT,
+    title=dict(
+        text="<b>VRAM per Price Bracket — What Does Each Brand Actually Give You?</b><br>"
+             "<span style='font-size:11px;color:#666'>RTX 4060 Ti (8GB, $399) vs RX 7800 XT (16GB, $499) is the defining mid-range comparison</span>",
+        font=dict(size=14, color=TEXT), x=0.05,
+    ),
+    barmode="group",
+    xaxis=dict(gridcolor=GRID, linecolor=BORDER, tickfont=dict(color=SUBTEXT)),
+    yaxis=dict(title="Average VRAM (GB)", gridcolor=GRID, linecolor=BORDER,
+               tickfont=dict(color=SUBTEXT)),
+    height=420,
+)
+
 # ── Render to HTML ────────────────────────────────────────────────────────────
 def fig_to_div(fig):
     return fig.to_html(full_html=False, include_plotlyjs=False, config={"responsive": True})
@@ -416,6 +537,8 @@ d2 = fig_to_div(fig2)
 d3 = fig_to_div(fig3)
 d4 = fig_to_div(fig4)
 d5 = fig_to_div(fig5)
+d6 = fig_to_div(fig6)
+d7 = fig_to_div(fig7)
 
 html = f"""<!DOCTYPE html>
 <html lang="en">
@@ -502,11 +625,15 @@ html = f"""<!DOCTYPE html>
 <div class="grid row-full" style="margin-bottom:16px">
   <div class="card">{d5}</div>
 </div>
-<div class="grid row-split" style="margin-bottom:16px">
-  <div class="card">{d2}</div>
-  <div class="card">{d3}</div>
+<div class="grid row-full" style="margin-bottom:16px">
+  <div class="card">{d6}</div>
 </div>
-<div class="grid row-full">
+<div class="grid row-split" style="margin-bottom:16px">
+  <div class="card">{d7}</div>
+  <div class="card">{d2}</div>
+</div>
+<div class="grid row-split" style="margin-bottom:16px">
+  <div class="card">{d3}</div>
   <div class="card">{d4}</div>
 </div>
 
