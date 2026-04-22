@@ -81,7 +81,7 @@ gpus["ppd_street_native"] = (
 # No subplot_titles here — we place vendor labels as annotations INSIDE each panel
 fig1 = make_subplots(
     rows=1, cols=3,
-    shared_yaxes=False,
+    shared_yaxes=True,
     horizontal_spacing=0.04,
 )
 
@@ -151,8 +151,8 @@ fig1.update_layout(
              "<span style='font-size:11px;color:#666'>Frame Generation (RTX 4000+ / RX 7000+) drives most of the gap</span>",
         font=dict(size=14, color=TEXT), x=0.05,
     ),
-    height=400,
-    legend=dict(orientation="h", yanchor="bottom", y=-0.42, xanchor="center", x=0.5,
+    height=360,
+    legend=dict(orientation="h", yanchor="bottom", y=-0.44, xanchor="center", x=0.5,
                 bgcolor="#ffffff", bordercolor=BORDER, borderwidth=1, font=dict(size=10, color=TEXT),
                 traceorder="normal"),
 )
@@ -348,7 +348,7 @@ bracket_agg = bracket_agg.merge(bracket_counts, on=["price_bracket","vendor"])
 fig5 = make_subplots(
     rows=1, cols=2,
     subplot_titles=[
-        "<b>Native rasterisation only — no AI</b>",
+        "<b>Native rasterisation only</b>",
         "<b>Effective PPD with upscaling + frame gen</b>",
     ],
     horizontal_spacing=0.10,
@@ -396,7 +396,7 @@ fig5.update_layout(
         font=dict(size=14, color=TEXT), x=0.05,
     ),
     barmode="group",
-    height=400,
+    height=360,
 )
 
 # ── Chart 6: MSRP vs Street Price ────────────────────────────────────────────
@@ -637,35 +637,12 @@ html = f"""<!DOCTYPE html>
   .tab-content.active  {{ display: block; }}
   .tab-content > div   {{ width: 100%; }}
 
-  /* ── Glossary ── */
-  .glossary-row {{
-    display: grid;
-    grid-template-columns: 1fr 340px;
-    gap: 10px;
-    margin-top: 10px;
-  }}
-  .glossary-card {{ padding: 12px 16px !important; }}
-  .glossary-title {{
-    font-size: 10px; font-weight: 700; color: #aaa;
-    text-transform: uppercase; letter-spacing: 0.08em;
-    margin-bottom: 9px;
-  }}
-  .glossary-grid {{
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 5px 14px;
-    align-items: baseline;
-  }}
-  .gt {{ font-size: 11.5px; font-weight: 600; color: #333; white-space: nowrap; }}
-  .gd {{ font-size: 11px; color: #777; }}
-
   /* ── Responsive ── */
   @media (max-width: 860px) {{
-    .main-charts   {{ grid-template-columns: 1fr; }}
-    .stats         {{ grid-template-columns: repeat(2, 1fr); }}
-    .header        {{ flex-direction: column; gap: 4px; }}
-    .glossary-row  {{ grid-template-columns: 1fr; }}
-    .tab-bar       {{ width: 100%; }}
+    .main-charts {{ grid-template-columns: 1fr; }}
+    .stats       {{ grid-template-columns: repeat(2, 1fr); }}
+    .header      {{ flex-direction: column; gap: 4px; }}
+    .tab-bar     {{ width: 100%; }}
   }}
 </style>
 </head>
@@ -692,8 +669,8 @@ html = f"""<!DOCTYPE html>
     <div class="stat-text">Nvidia effective PPD with DLSS + MFG<br>half from silicon · half AI-generated frames</div>
   </div>
   <div class="stat">
-    <div class="stat-num" style="color:#0071c5">+50%</div>
-    <div class="stat-text">RTX 3080 real avg cost over MSRP<br>$699 list · ~$1,050 actual · 2020–21 shortage</div>
+    <div class="stat-num" style="color:#0071c5">12 GB</div>
+    <div class="stat-text">Intel Arc B580 VRAM at $249<br>Nvidia RTX 4060 Ti ships 8 GB at $399</div>
   </div>
 </div>
 
@@ -717,28 +694,6 @@ html = f"""<!DOCTYPE html>
     <div class="tab-content active" id="chart-prices">{d2}</div>
     <div class="tab-content"        id="chart-vram"  >{d7}</div>
     <div class="tab-content"        id="chart-street">{d6}</div>
-  </div>
-</div>
-
-<!-- Glossary -->
-<div class="glossary-row">
-  <div></div>
-  <div class="card glossary-card">
-    <div class="glossary-title">How to read this dashboard</div>
-    <div class="glossary-grid">
-      <span class="gt">PPD</span>
-      <span class="gd">Performance Per Dollar — perf score ÷ 2024-adjusted launch price</span>
-      <span class="gt">Native PPD</span>
-      <span class="gd">Raw rasterisation only, zero AI assistance</span>
-      <span class="gt">Effective PPD</span>
-      <span class="gd">Native PPD × upscaling boost × frame generation multiplier</span>
-      <span class="gt">Frame Gen</span>
-      <span class="gd">AI-synthesised intermediate frames (RTX 4000+ · RX 7000+)</span>
-      <span class="gt">MSRP</span>
-      <span class="gd">Manufacturer list price at launch</span>
-      <span class="gt">Street price</span>
-      <span class="gd">Avg price buyers actually paid, tracked by Tom's Hardware &amp; Hardware Unboxed</span>
-    </div>
   </div>
 </div>
 
