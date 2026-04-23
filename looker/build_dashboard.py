@@ -149,7 +149,7 @@ fig1.update_layout(
     title=dict(
         text="<b>The Divergence: Raw vs Effective Performance Per Dollar</b><br>"
              "<span style='font-size:11px;color:#666'>Frame Generation (RTX 4000+ / RX 7000+) drives most of the gap</span>",
-        font=dict(size=14, color=TEXT), x=0.05,
+        font=dict(size=14, color=TEXT), x=0.05, y=0.96, yanchor="top",
     ),
     height=360,
     legend=dict(orientation="h", yanchor="bottom", y=-0.44, xanchor="center", x=0.5,
@@ -393,7 +393,7 @@ fig5.update_layout(
     title=dict(
         text="<b>Same-Price Showdown: What Does Each Brand Give You at the Same Budget?</b><br>"
              "<span style='font-size:11px;color:#666'>AMD's most expensive GPU costs half of Nvidia's; flagship vs flagship misses the real comparison</span>",
-        font=dict(size=14, color=TEXT), x=0.05, y=0.97, yanchor="top",
+        font=dict(size=14, color=TEXT), x=0.05, y=0.96, yanchor="top",
     ),
     barmode="group",
     height=360,
