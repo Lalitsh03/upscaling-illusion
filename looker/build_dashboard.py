@@ -393,7 +393,7 @@ fig5.update_layout(
     title=dict(
         text="<b>Same-Price Showdown: What Does Each Brand Give You at the Same Budget?</b><br>"
              "<span style='font-size:11px;color:#666'>AMD's most expensive GPU costs half of Nvidia's; flagship vs flagship misses the real comparison</span>",
-        font=dict(size=14, color=TEXT), x=0.05, y=0.99, yanchor="top",
+        font=dict(size=14, color=TEXT), x=0.05, y=0.97, yanchor="top",
     ),
     barmode="group",
     height=360,
