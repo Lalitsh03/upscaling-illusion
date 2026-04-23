@@ -349,7 +349,7 @@ fig5 = make_subplots(
     rows=1, cols=2,
     subplot_titles=[
         "<b>Native rasterisation only</b>",
-        "<b>Effective PPD with upscaling + frame gen</b>",
+        "<b>Effective PPD · upscaling + frame gen</b>",
     ],
     horizontal_spacing=0.10,
 )
@@ -384,7 +384,7 @@ for i in range(1, 3):
 for ann in fig5.layout.annotations:
     ann.font = dict(size=12, color="#333333")
 
-fig5_layout = {**BASE_LAYOUT, "margin": dict(l=50, r=20, t=56, b=85)}
+fig5_layout = {**BASE_LAYOUT, "margin": dict(l=50, r=20, t=64, b=85)}
 fig5.update_layout(
     **fig5_layout,
     legend=dict(orientation="h", yanchor="bottom", y=-0.45, xanchor="center", x=0.5,
@@ -392,7 +392,7 @@ fig5.update_layout(
                 font=dict(size=10, color=TEXT)),
     title=dict(
         text="<b>Same-Price Showdown: What Does Each Brand Give You at the Same Budget?</b><br>"
-             "<span style='font-size:11px;color:#666'>AMD's most expensive GPU costs half of Nvidia's; flagship vs flagship misses the real comparison</span>",
+             "<span style='font-size:11px;color:#666'>At equal budgets, AMD &amp; Intel often out-PPD Nvidia on raw silicon</span>",
         font=dict(size=14, color=TEXT), x=0.05,
     ),
     barmode="group",
