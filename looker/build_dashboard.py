@@ -75,6 +75,10 @@ gpus["street_price_2024_adj"] = (
 gpus["ppd_street_native"] = (
     gpus["perf_score_native_1440p"] / gpus["street_price_2024_adj"]
 ).round(5)
+# MSRP-based PPD — uses launch_price_2024_adj so the two lines in fig6 differ
+gpus["ppd_msrp_native"] = (
+    gpus["perf_score_native_1440p"] / gpus["launch_price_2024_adj"]
+).round(5)
 
 # ── Chart 1: Divergence ───────────────────────────────────────────────────────
 # No subplot_titles here — we place vendor labels as annotations INSIDE each panel
@@ -401,8 +405,8 @@ fig5.update_layout(
 # ── Chart 6: MSRP vs Street Price ────────────────────────────────────────────
 gen_street = gpus.groupby(["vendor","generation"]).agg(
     gen_launch_year = ("launch_year", "min"),
-    ppd_msrp        = ("perf_per_dollar_native", "mean"),
-    ppd_street      = ("ppd_street_native", "mean"),
+    ppd_msrp        = ("ppd_msrp_native", "mean"),   # perf / launch_price_2024_adj (MSRP)
+    ppd_street      = ("ppd_street_native", "mean"),  # perf / street_price_2024_adj (actual paid)
 ).reset_index().round(5)
 
 fig6 = make_subplots(rows=1, cols=3, shared_yaxes=False, horizontal_spacing=0.08)
