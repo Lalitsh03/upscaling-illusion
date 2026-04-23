@@ -670,7 +670,7 @@ html = f"""<!DOCTYPE html>
   </div>
   <div class="stat">
     <div class="stat-num" style="color:#0071c5">12 GB</div>
-    <div class="stat-text">Arc B580 VRAM at $249 — RTX 4060 Ti<br>gets you 8 GB for $150 more</div>
+    <div class="stat-text">Arc B580 packs 12 GB at $249, whereas<br>RTX 4060 Ti gets you only 8 GB at $399</div>
   </div>
 </div>
 
