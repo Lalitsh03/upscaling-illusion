@@ -44,7 +44,7 @@ Raw (native) rasterization PPD roughly doubled but took 7 years to get there:
 
 Effective PPD with upscaling and frame generation tells a very different story:
 
-- **Nvidia RTX 5000 with Multi Frame Gen reaches 4× the effective PPD of the RTX 2000** but only 2× of that is real rendered performance. The other 2× comes from AI-generated frames, not silicon progress
+- **Nvidia RTX 5000 with Multi Frame Gen reaches ~4× the effective PPD of the RTX 2000 baseline** (native, no upscaling) — roughly 2× comes from 7 years of silicon progress, and the remaining ~2× comes from AI-generated frames, not rendered pixels
 - Before frame generation existed (pre-2022), the upscaling boost was only 1.1–1.3× which is a modest quality improvement, not a headline multiplier
 
 ![The Divergence Chart](data/processed/chart_divergence_analysis.png)

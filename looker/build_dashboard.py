@@ -665,8 +665,8 @@ html = f"""<!DOCTYPE html>
     <div class="stat-text">Nvidia flagship price increase<br>inflation-adjusted 2024 dollars</div>
   </div>
   <div class="stat">
-    <div class="stat-num" style="color:#f5a623">4×</div>
-    <div class="stat-text">Nvidia effective PPD with DLSS + MFG<br>half from silicon · half AI-generated frames</div>
+    <div class="stat-num" style="color:#f5a623">~4×</div>
+    <div class="stat-text">Nvidia effective PPD with DLSS + MFG<br>~2× from silicon · ~2× from AI-generated frames</div>
   </div>
   <div class="stat">
     <div class="stat-num" style="color:#0071c5">12 GB</div>
