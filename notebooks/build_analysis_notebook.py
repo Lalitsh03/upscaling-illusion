@@ -104,6 +104,9 @@ gpus['street_price_2024_adj'] = (
 gpus['ppd_street_native'] = (
     gpus['perf_score_native_1440p'] / gpus['street_price_2024_adj']
 ).round(5)
+gpus['ppd_msrp_native'] = (
+    gpus['perf_score_native_1440p'] / gpus['launch_price_2024_adj']
+).round(5)
 
 print(f"GPU records: {len(gpus)} | Generations: {gen_agg.shape[0]}")
 print(f"CPU records: {len(cpus)}")
@@ -348,7 +351,7 @@ cells.append(code("""\
 # Compare MSRP-based native PPD vs street-price-based native PPD per generation
 gen_street = gpus.groupby(['vendor','generation']).agg(
     gen_launch_year = ('launch_year', 'min'),
-    ppd_msrp        = ('perf_per_dollar_native', 'mean'),
+    ppd_msrp        = ('ppd_msrp_native', 'mean'),
     ppd_street      = ('ppd_street_native', 'mean'),
 ).reset_index().round(5)
 
