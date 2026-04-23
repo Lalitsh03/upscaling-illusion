@@ -502,7 +502,7 @@ fig7.update_layout(
     legend=dict(bgcolor="#ffffff", bordercolor=BORDER, borderwidth=1, font=dict(size=9, color=TEXT)),
     title=dict(
         text="<b>VRAM per Price Bracket — What Does Each Brand Actually Give You?</b><br>"
-             "<span style='font-size:11px;color:#666'>RTX 4060 Ti (8GB, $399) vs RX 7800 XT (16GB, $499) is the defining mid-range comparison</span>",
+             "<span style='font-size:11px;color:#666'>RTX 5060 Ti 8GB ($379) still ships 8 GB while Arc B580 packs 12 GB for $249</span>",
         font=dict(size=13, color=TEXT), x=0.05,
     ),
     barmode="group",
@@ -670,7 +670,7 @@ html = f"""<!DOCTYPE html>
   </div>
   <div class="stat">
     <div class="stat-num" style="color:#0071c5">12 GB</div>
-    <div class="stat-text">Arc B580 packs 12 GB at $249, whereas<br>RTX 4060 Ti gets you only 8 GB at $399</div>
+    <div class="stat-text">Arc B580 packs 12 GB at $249, whereas<br>RTX 5060 Ti 8GB gets you only 8 GB at $379</div>
   </div>
 </div>
 

@@ -66,7 +66,7 @@ So while raw performance roughly doubled, you are paying 1.4× more in real purc
 
 ### Flagship vs flagship tells part of the story — same-price tells the rest
 
-The flagship price trend above compares each brand's best product over time and is useful for tracking how the top-end market has moved. But it has a limit: AMD's flagship RX 9070 XT launched at ~$999 while Nvidia's flagship RTX 5090 launched at $1,999. These are not the same product competing for the same buyer.
+The flagship price trend above compares each brand's best product over time and is useful for tracking how the top-end market has moved. But it has a limit: AMD's highest-tier current card, the RX 9070 XT, launched at $599 while Nvidia's flagship RTX 5090 launched at $1,999. These are not the same product competing for the same buyer.
 
 Comparing within price brackets gives the fairer picture — what does each brand actually offer a buyer with a fixed budget:
 
@@ -106,11 +106,13 @@ VRAM capacity has become a decisive purchase factor at 1440p and above. Modern g
 
 | GPU | MSRP | VRAM | Value verdict |
 |-----|------|------|--------------|
-| RTX 4060 Ti | $399 | 8GB | Performance competitive; VRAM is a real concern at 1440p |
-| RX 7800 XT | $499 | 16GB | $100 more, 2× the VRAM — widely considered the better mid-range buy |
-| RTX 3060 | $329 | 12GB | Two generations older Nvidia card had more VRAM than the RTX 4060 |
+| Arc B580 | $249 | 12GB | Best VRAM-per-dollar in the dataset; budget card with mid-range memory |
+| RTX 5060 Ti 8GB | $379 | 8GB | Nvidia's 2025 mid-range still ships 8GB — less VRAM than a $249 Intel card |
+| RTX 5060 Ti | $429 | 16GB | 16GB finally available from Nvidia, but at $180 premium over Arc B580 |
+| RX 7800 XT | $499 | 16GB | AMD's established mid-high; 16GB since 2023 |
+| RX 9070 XT | $599 | 16GB | AMD's current-gen high-tier; 16GB at a competitive price |
 
-The VRAM per price bracket analysis shows AMD and Intel consistently offering more VRAM at the mid and high tiers. At the extreme bracket ($1500+), Nvidia's RTX 5090 leads with 32GB. The 8GB cap on the RTX 4060 and RTX 4060 Ti at their price points is the most widely criticised VRAM decision in the dataset.
+The VRAM per price bracket analysis shows AMD and Intel consistently offering more VRAM at the mid and high tiers. At the extreme bracket ($1500+), Nvidia's RTX 5090 leads with 32GB. The 8GB cap on Nvidia's mid-range persisted from the RTX 4060/4060 Ti into the RTX 5060 Ti 8GB — the most widely criticised VRAM pattern in the dataset. Only the $429 16GB 5060 Ti variant addresses it, and it costs $180 more than the Arc B580 which already ships 12GB.
 
 ![VRAM by Price Bracket](data/processed/chart_vram_by_bracket.png)
 
