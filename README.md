@@ -39,8 +39,8 @@ Raw (native) rasterization PPD roughly doubled but took 7 years to get there:
 | Vendor | First Gen | Latest Gen | Native PPD Change |
 |--------|-----------|-----------|-------------------|
 | Nvidia | RTX 2000 (2018) | RTX 5000 (2025) | ~2× |
-| AMD | RX 5000 (2019) | RX 9000 (2025) | ~1.7× |
-| Intel | Arc A (2022) | Arc B (2024) | ~1.5× |
+| AMD | RX 5000 (2019) | RX 9000 (2025) | ~1.5× |
+| Intel | Arc A (2022) | Arc B (2024) | ~1.4× |
 
 Effective PPD with upscaling and frame generation tells a very different story:
 
@@ -84,9 +84,9 @@ The pattern across brackets also connects directly back to the AI upscaling find
 
 ![Price Bracket Showdown](data/processed/chart_price_bracket.png)
 
-### MSRP vs what people actually paid — the RTX 3000 generation looks very different
+### MSRP vs what people actually paid — 2020–2022 was the worst, but not the only case
 
-Using MSRP (the official launch price) is standard but misleading for 2020–2022. The RTX 3000 and RX 6000 generations launched into a cryptocurrency mining boom and COVID supply chain collapse. Cards sold for 20–50% above MSRP on average:
+Using MSRP (the official launch price) is standard but misleading for several generations. The RTX 3000 and RX 6000 series launched into a cryptocurrency mining boom and COVID supply chain collapse — the most extreme market distortion in this dataset:
 
 | GPU | MSRP | Avg street price | Premium |
 |-----|------|-----------------|---------|
@@ -96,7 +96,21 @@ Using MSRP (the official launch price) is standard but misleading for 2020–202
 | RX 6800 XT | $649 | ~$900 | +39% |
 | RX 6700 XT | $479 | ~$600 | +25% |
 
-When native PPD is recalculated using real street prices, Nvidia's RTX 3000 generation looks significantly worse. The post-shortage RTX 4000 and RX 7000 generations, which sold near MSRP, benefit from the comparison. AMD's RX 6000 was affected too, but less severely — its RX 6800 XT and RX 6900 XT premiums were smaller because RDNA 2 was less efficient for crypto mining than Ampere.
+The 2025 launch window was a milder version of the same dynamic — demand exceeded supply at launch for both Nvidia and AMD's newest cards:
+
+| GPU | MSRP | Avg street price | Premium |
+|-----|------|-----------------|---------|
+| RTX 5070 | $549 | ~$700 | +27% |
+| RTX 5070 Ti | $749 | ~$900 | +20% |
+| RTX 5080 | $999 | ~$1,150 | +15% |
+| RTX 5090 | $1,999 | ~$2,299 | +15% |
+| RX 9070 XT | $599 | ~$670 | +12% |
+| RX 9070 | $549 | ~$620 | +13% |
+| RTX 4090 | $1,599 | ~$1,750 | +9% |
+
+Not every launch ran above MSRP — the RX 7600 was quickly discounted 7% below MSRP and Intel Arc A-series sold 5–6% below. This project uses actual street prices for any GPU where the deviation exceeded ~5%, documented in the seed CSV's `notes` column.
+
+When native PPD is recalculated using real street prices, Nvidia's RTX 3000 generation looks significantly worse — and the 2025 launches look meaningfully worse than their paper MSRP would suggest. AMD's RX 6000 was affected in 2020–2022 too, but less severely: RDNA 2 was less efficient for crypto mining than Ampere, so its premiums were smaller and shorter-lived.
 
 ![MSRP vs Street Price](data/processed/chart_msrp_vs_street.png)
 
@@ -184,7 +198,15 @@ The raw GPU data had launch prices in nominal dollars across different years. Tw
 - `launch_price_2024_adj` — MSRP × CPI multiplier. Used for the flagship price trend chart (what manufacturers intended to charge).
 - `street_price_2024_adj` — actual street price × CPI multiplier. Used for all PPD calculations (what a real buyer actually spent).
 
-For most cards these are identical. Where they differ: RTX 3000 and RX 6000 shortage-era cards (street was 20–50% above MSRP), RTX 5090 (street ~15% above MSRP), and Intel Arc A-series (sold ~5% below MSRP).
+For most cards these are identical. Where they differ:
+
+- **RTX 3000 / RX 6000** (2020–2022 shortage era): street was 20–50% above MSRP — the most severe divergence in the dataset
+- **RTX 5000 Jan–Feb 2025 launch cards** (5070, 5070 Ti, 5080): supply-constrained at launch, 15–27% above MSRP; the 5060-series (May–June 2025) was 4–7% above
+- **RTX 5090**: street ~15% above MSRP; Founders Edition sold out instantly, AIBs commanded premiums
+- **RTX 4090**: AIB cards launched at $1,799+; FE was unavailable at MSRP for months; street average ~9% above MSRP
+- **RX 9070 / RX 9070 XT**: strong March 2025 demand against RTX 5070/5070 Ti — street ran 12–13% above MSRP in the first 4–6 weeks
+- **RX 7600**: sold below MSRP — weak entry-level RDNA 3 demand, retailers discounted to $249 within weeks of the $269 launch
+- **Intel Arc A-series**: sold 5–6% below MSRP due to weak initial demand; Intel partner subsidies to drive volume
 
 Three derived performance columns were then calculated per GPU:
 
@@ -377,7 +399,7 @@ Tom's Hardware Ultra preset is the right primary source for mid-range and high-e
 ### Other constraints
 
 - **Upscaling multipliers are generation averages** — per-game variance for DLSS/FSR/XeSS can swing 15–25% depending on the title, so individual game results will differ from the averages used here
-- **Street prices used for shortage-era GPUs; MSRP used elsewhere — here is why** — the RTX 3000 and RX 6000 generations (2020–2022) launched into a perfect storm of COVID supply chain disruption and cryptocurrency mining demand. Street prices were tracked in real time by Tom's Hardware GPU market reports, CamelCamelCamel historical price data, and Hardware Unboxed coverage throughout the shortage. These sources documented average transaction prices running 20–50% above MSRP for Nvidia and 15–40% above for AMD, sustained for 12–18 months. That data is what the street price estimates in this project are based on — the multipliers per GPU are noted in the seed CSV. For all other generations, MSRP is used because non-shortage GPUs typically settle to within 2–5% of MSRP within 4–6 weeks of launch. A 3% universal markup affects every vendor roughly equally and does not change the direction of any finding — so using MSRP for those generations is a defensible simplification rather than a material error. The shortage era was categorically different: a 40–50% premium sustained over a year changes which generation looks like good value, and it does so asymmetrically (Nvidia's Ampere was the more popular mining card, so it suffered a larger and longer premium than AMD's RDNA 2)
+- **Street prices are used whenever the deviation from MSRP was material — here is how that was determined** — a card is treated as "at MSRP" if its real market price settled within ~5% of list price within 4–6 weeks of launch; that 5% swing affects all vendors equally and does not change the direction of any finding. Where deviations were larger or more sustained, actual street prices are used instead. The methodology was applied consistently across every GPU in the dataset after individual review: the RTX 3000 / RX 6000 shortage era (20–50% premiums, sustained 12–18 months) is the most extreme case, but the RTX 5000 Jan 2025 launch cards (15–27% above MSRP), RTX 4090 (AIB premiums averaging ~9%), and RX 9070/9070 XT (12–13% above MSRP at launch) were all material enough to use street prices. Conversely, the RX 7600 and Intel Arc A-series sold *below* MSRP and are adjusted downward. Every deviation is documented in the `notes` column of `gpu_specs_seed.csv`. The shortage era remains categorically different in scale — a 40–50% premium sustained over a year changes which generation looks like good value, and it does so asymmetrically (Nvidia's Ampere was the more popular mining card, so it suffered a larger and longer premium than AMD's RDNA 2)
 - **FSR 4 is under-represented** — AMD's upscaling has improved significantly with FSR 4 (released with the RX 9000 / RDNA 4 series). Early head-to-head tests show it closing the gap with DLSS 3 meaningfully, but stable cross-game benchmark data was not yet available at the time of analysis. The FSR 4.x multipliers used here are conservative estimates; real-world performance may be higher as more titles add native FSR 4 support and driver optimisation matures. AMD subsequently released **FSR 4.1 in March 2026** — reviewers are calling it an even larger step up and a genuine like-for-like competitor to Nvidia's upscaling; it was not possible to include it here as no reliable multi-game benchmark data existed at time of writing
 - **Frame generation and input latency** — the FPS numbers frame generation produces are real, but they come with added input latency that is not captured in any performance index. A competitive or latency-sensitive player may find frame-generated FPS less useful than native FPS at the same number
 - **Market share estimates are approximate** — figures sourced from Jon Peddie Research quarterly estimates and Steam Hardware Survey composites; useful for trend direction, not precise percentages
@@ -423,7 +445,7 @@ This is not a reason to ignore the laptop market — it is a reason why a dedica
 
 AI upscaling is real technology that genuinely improved what consumers could do with a given GPU. But the way it is marketed conflates two very different things: better rendering and AI-generated frames and the data shows the industry has leaned harder on the second as the first got harder to deliver.
 
-Raw GPU performance roughly doubled over 7 years across all three vendors. That sounds significant until you realise Nvidia's flagship prices also went up 1.4× in that same window. AMD delivered better raw value, their native PPD improved ~1.7× while prices actually fell in inflation-adjusted terms. Intel Arc came in as the strongest value play per raw dollar, though with the smallest ecosystem.
+Raw GPU performance roughly doubled over 7 years across all three vendors. That sounds significant until you realise Nvidia's flagship prices also went up 1.4× in that same window. AMD delivered better raw value, their native PPD improved ~1.5× while MSRP prices actually fell in inflation-adjusted terms — though real buyers paid 12–13% above MSRP on the RX 9070/9070 XT at launch, compressing the street-price PPD gain somewhat. Intel Arc came in as the strongest value play per raw dollar, though with the smallest ecosystem.
 
 The frame generation story is the most important finding. Before 2022, upscaling added a modest 1.1–1.3× boost — a real quality improvement. After 2022, frame generation pushed the effective multiplier to 1.65–2.0×, which is what drives the impressive generational comparison numbers manufacturers put in their marketing. Strip it out, and the hardware improvements are solid but unspectacular.
 
