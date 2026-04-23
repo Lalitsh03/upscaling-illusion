@@ -384,7 +384,7 @@ for i in range(1, 3):
 for ann in fig5.layout.annotations:
     ann.font = dict(size=12, color="#333333")
 
-fig5_layout = {**BASE_LAYOUT, "margin": dict(l=50, r=20, t=100, b=85)}
+fig5_layout = {**BASE_LAYOUT, "margin": dict(l=50, r=20, t=78, b=85)}
 fig5.update_layout(
     **fig5_layout,
     legend=dict(orientation="h", yanchor="bottom", y=-0.45, xanchor="center", x=0.5,
