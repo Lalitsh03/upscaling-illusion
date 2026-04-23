@@ -49,18 +49,20 @@ Effective PPD with upscaling and frame generation tells a very different story:
 
 ![The Divergence Chart](data/processed/chart_divergence_analysis.png)
 
-### Nvidia flagship prices rose 42% in inflation-adjusted dollars
+### Nvidia flagship prices rose 46% in inflation-adjusted dollars
 
 "Real terms" means prices adjusted for inflation so a 2018 GPU priced at $700 is converted to what that $700 would be worth in 2024 dollars, making fair comparisons across years possible. In Nvidia's case, even after adjusting for inflation, flagship prices still went up significantly:
 
-| Generation | Avg Flagship Price (2024 USD) |
-|-----------|-------------------------------|
-| RTX 2000 (2018) | $746 |
-| RTX 3000 (2020) | $904 (+21%) |
-| RTX 4000 (2022) | $850 (-6%) |
-| RTX 5000 (2025) | $1,057 (+24%) |
+| Generation | Avg Flagship MSRP (2024 USD) | Change |
+|-----------|-------------------------------|--------|
+| RTX 2000 (2018) | $1,011 | baseline |
+| RTX 3000 (2020) | $1,375 | +36% |
+| RTX 4000 (2022) | $1,351 | −2% |
+| RTX 5000 (2025) | $1,475 | +9% |
 
-So while raw performance roughly doubled, you are paying 1.4× more in real purchasing power to get there. AMD moved in the opposite direction as their inflation-adjusted flagship prices fell ~18% while native PPD improved by ~1.7×.
+*(Flagship tier only: RTX 2080/Ti → RTX 3080/Ti/3090 → RTX 4080/Super/4090 → RTX 5080/5090. 2024-adjusted using US CPI.)*
+
+So while raw performance roughly doubled, you are paying ~1.5× more in real purchasing power to get there at the flagship level. AMD's story is different: their flagship MSRP was essentially flat between the RX 6000 (avg $1,017 in 2024 USD) and RX 7000 (avg $1,036) generations, and with the RX 9000 AMD chose not to release a flagship-tier card at all — the RX 9070 XT at $599 is their current best, sitting in the high tier rather than the >$1,000 bracket Nvidia occupies alone.
 
 ![Price Trend Chart](data/processed/chart_price_analysis.png)
 
@@ -445,7 +447,7 @@ This is not a reason to ignore the laptop market — it is a reason why a dedica
 
 AI upscaling is real technology that genuinely improved what consumers could do with a given GPU. But the way it is marketed conflates two very different things: better rendering and AI-generated frames and the data shows the industry has leaned harder on the second as the first got harder to deliver.
 
-Raw GPU performance roughly doubled over 7 years across all three vendors. That sounds significant until you realise Nvidia's flagship prices also went up 1.4× in that same window. AMD delivered better raw value, their native PPD improved ~1.5× while MSRP prices actually fell in inflation-adjusted terms — though real buyers paid 12–13% above MSRP on the RX 9070/9070 XT at launch, compressing the street-price PPD gain somewhat. Intel Arc came in as the strongest value play per raw dollar, though with the smallest ecosystem.
+Raw GPU performance roughly doubled over 7 years across all three vendors. That sounds significant until you realise Nvidia's flagship prices also went up ~1.5× in that same window in real purchasing-power terms. AMD delivered better raw value — native PPD improved ~1.5× while their flagship MSRP stayed flat in real terms, and AMD chose not to compete in the >$1,000 bracket at all with the RX 9000 generation. Note that real buyers paid 12–13% above MSRP for RX 9070/9070 XT at launch, compressing the street-price PPD gain somewhat. Intel Arc came in as the strongest value play per raw dollar, though with the smallest ecosystem.
 
 The frame generation story is the most important finding. Before 2022, upscaling added a modest 1.1–1.3× boost — a real quality improvement. After 2022, frame generation pushed the effective multiplier to 1.65–2.0×, which is what drives the impressive generational comparison numbers manufacturers put in their marketing. Strip it out, and the hardware improvements are solid but unspectacular.
 

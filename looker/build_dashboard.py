@@ -661,8 +661,8 @@ html = f"""<!DOCTYPE html>
     <div class="stat-text">native silicon PPD gain<br>Nvidia RTX 2000 → RTX 5000 · 7 years</div>
   </div>
   <div class="stat">
-    <div class="stat-num" style="color:#ED1C24">+42%</div>
-    <div class="stat-text">Nvidia flagship price increase<br>inflation-adjusted 2024 dollars</div>
+    <div class="stat-num" style="color:#ED1C24">+46%</div>
+    <div class="stat-text">Nvidia flagship price increase<br>RTX 2000 → RTX 5000 · inflation-adjusted</div>
   </div>
   <div class="stat">
     <div class="stat-num" style="color:#f5a623">~4×</div>
