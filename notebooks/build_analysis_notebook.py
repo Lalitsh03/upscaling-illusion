@@ -96,10 +96,8 @@ mshare = mshare.groupby('year')[['amd_gpu_share','nvidia_gpu_share','intel_gpu_s
 cpu_sh = cpu_sh.groupby('year')[['amd_cpu_share','intel_cpu_share']].mean().reset_index()
 
 # ── Street price enrichment ──────────────────────────────────────────────────
-# gpu_analysis.db uses MSRP. Merge real street prices from seed CSV and derive
-# inflation-adjusted street price using the same CPI multiplier already applied.
-seed_raw = pd.read_csv(DATA_RAW / 'gpu_specs_seed.csv')
-gpus = gpus.merge(seed_raw[['gpu_name', 'street_price_usd']], on='gpu_name', how='left')
+# street_price_usd is already in gpu_analysis (loaded from seed CSV by notebook 01).
+# Derive inflation-adjusted street price using the same CPI multiplier already applied.
 gpus['street_price_2024_adj'] = (
     gpus['street_price_usd'] * (gpus['launch_price_2024_adj'] / gpus['launch_price_usd'])
 ).round(2)
