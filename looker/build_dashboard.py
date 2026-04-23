@@ -392,8 +392,8 @@ fig5.update_layout(
                 font=dict(size=10, color=TEXT)),
     title=dict(
         text="<b>Same-Price Showdown: What Does Each Brand Give You at the Same Budget?</b><br>"
-             "<span style='font-size:11px;color:#666'>At equal budgets, AMD &amp; Intel often out-PPD Nvidia on raw silicon</span>",
-        font=dict(size=14, color=TEXT), x=0.05,
+             "<span style='font-size:11px;color:#666'>AMD's most expensive GPU costs half of Nvidia's; flagship vs flagship misses the real comparison</span>",
+        font=dict(size=14, color=TEXT), x=0.05, y=0.99, yanchor="top",
     ),
     barmode="group",
     height=360,
