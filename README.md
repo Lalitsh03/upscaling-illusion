@@ -179,7 +179,12 @@ data/raw/
 
 ### Step 1 — Data cleaning and enrichment (Notebook 01)
 
-The raw GPU data had launch prices in nominal dollars across different years. To make a 2018 GPU directly comparable to a 2025 GPU, every launch price was multiplied by its year's CPI multiplier to produce `launch_price_2024_adj`.
+The raw GPU data had launch prices in nominal dollars across different years. Two inflation-adjusted price columns are computed:
+
+- `launch_price_2024_adj` — MSRP × CPI multiplier. Used for the flagship price trend chart (what manufacturers intended to charge).
+- `street_price_2024_adj` — actual street price × CPI multiplier. Used for all PPD calculations (what a real buyer actually spent).
+
+For most cards these are identical. Where they differ: RTX 3000 and RX 6000 shortage-era cards (street was 20–50% above MSRP), RTX 5090 (street ~15% above MSRP), and Intel Arc A-series (sold ~5% below MSRP).
 
 Three derived performance columns were then calculated per GPU:
 
@@ -194,10 +199,10 @@ gpus['perf_score_effective_with_fg'] = (
     gpus['perf_score_native_1440p'] * gpus['upscaling_boost_with_fg']
 )
 
-# PPD variants — all divided by the inflation-adjusted price
-gpus['perf_per_dollar_native']          = gpus['perf_score_native_1440p']         / gpus['launch_price_2024_adj']
-gpus['perf_per_dollar_effective_no_fg'] = gpus['perf_score_effective_no_fg']       / gpus['launch_price_2024_adj']
-gpus['perf_per_dollar_effective_with_fg']= gpus['perf_score_effective_with_fg']   / gpus['launch_price_2024_adj']
+# PPD variants — divided by street_price_2024_adj (what buyers actually paid)
+gpus['perf_per_dollar_native']            = gpus['perf_score_native_1440p']         / gpus['street_price_2024_adj']
+gpus['perf_per_dollar_effective_no_fg']   = gpus['perf_score_effective_no_fg']       / gpus['street_price_2024_adj']
+gpus['perf_per_dollar_effective_with_fg'] = gpus['perf_score_effective_with_fg']     / gpus['street_price_2024_adj']
 ```
 
 The upscaling boost multipliers (e.g. DLSS 3.x with frame gen = 1.70×) were researched and assigned per GPU based on what technology was available at launch. Frame generation was deliberately kept separate from upscaling-only gains so the two contributions could be visually split in the analysis.
@@ -286,10 +291,12 @@ The key nuance: Nvidia's ecosystem advantage (DLSS quality, frame generation mat
 The core metric. For each GPU:
 
 ```
-PPD (native)  = perf_score_native_1440p  / launch_price_2024_adj
-PPD (no FG)   = perf_score_native × upscaling_boost_no_fg   / launch_price_2024_adj
-PPD (with FG) = perf_score_native × upscaling_boost_with_fg / launch_price_2024_adj
+PPD (native)  = perf_score_native_1440p  / street_price_2024_adj
+PPD (no FG)   = perf_score_native × upscaling_boost_no_fg   / street_price_2024_adj
+PPD (with FG) = perf_score_native × upscaling_boost_with_fg / street_price_2024_adj
 ```
+
+`street_price_2024_adj` is used because it reflects what a buyer actually spent. For shortage-era cards (RTX 3000, RX 6000) this is materially higher than MSRP — which correctly makes those cards look like poorer value, because they were. The flagship launch price chart (fig 2) still uses `launch_price_2024_adj` since that chart tracks the manufacturer's pricing decisions, not secondary market conditions.
 
 `perf_score_native_1440p` is a 1440p rasterization index relative to the RTX 3080 at launch = 100. Upscaling boost multipliers reflect quality-mode upscaling and frame generation gains per technology version:
 
