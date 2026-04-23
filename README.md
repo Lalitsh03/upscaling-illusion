@@ -149,7 +149,7 @@ There is no single clean dataset for this kind of analysis. Data was assembled f
 
 | Dataset | Source | What it contains |
 |---------|--------|-----------------|
-| GPU specs & performance | Tom's Hardware GPU Hierarchy + Hardware Unboxed generation reviews | Launch price, launch date, 1440p rasterization index, upscaling tech version |
+| GPU specs & performance | Tom's Hardware GPU Hierarchy (primary) + Passmark G3D Mark (supplement for VRAM-constrained budget cards) + Hardware Unboxed generation reviews | Launch price, launch date, 1440p rasterization index, upscaling tech version |
 | CPU benchmarks | PassMark single-thread trend + Anandtech flagship reviews | Single-thread perf index per generation, launch price |
 | US CPI (inflation) | US Bureau of Labor Statistics — annual CPI index | Multiplier to convert any year's USD to 2024 USD |
 | GPU & CPU market share | Jon Peddie Research quarterly estimates + Steam Hardware Survey composites | Nvidia/AMD/Intel GPU share %, AMD/Intel CPU share % by year |
@@ -243,11 +243,13 @@ Open `data/gpu_analysis.db` in DBeaver and run any query from `sql/02_analysis_q
 
 ### Benchmark Scores — What They Are and Why We Used Them
 
-**GPU — 1440p rasterization index (Tom's Hardware GPU Hierarchy)**
+**GPU — 1440p rasterization index (Tom's Hardware + Passmark G3D Mark)**
 
 Every GPU in the dataset has a `perf_score_native_1440p` — a relative performance index anchored to the RTX 3080 at launch = 100. A score of 150 means that GPU is approximately 50% faster than an RTX 3080 at 1440p rasterization. A score of 70 means 30% slower.
 
-The index is built from Tom's Hardware GPU Hierarchy which averages 1440p framerates across a standardised game suite covering multiple engines and genres. Using a composite average rather than a single game is important — a GPU that excels in one engine but underperforms in another produces a misleading single-game result. The composite average smooths this out.
+The index is built primarily from Tom's Hardware GPU Hierarchy, which averages 1440p framerates across a standardised game suite covering multiple engines and genres. Using a composite average rather than a single game is important — a GPU that excels in one engine but underperforms in another produces a misleading single-game result. The composite average smooths this out.
+
+**Passmark G3D Mark as a supplement** — for budget GPUs with 8 GB VRAM (e.g. RX 7600, RTX 4060), Tom's Hardware's Ultra quality preset causes VRAM spills that depress scores below what a typical gamer at 1440p High/Medium would experience. For these specific cards, Passmark G3D Mark (a crowdsourced benchmark database with over 100,000 submissions per card) was used instead, since it reflects a broader range of real-world settings. The two sources are reconciled to the same RTX 3080 = 100 scale using an RTX 4070 anchor point (a 12 GB card where both sources agree closely).
 
 **Why 1440p specifically?** At 1080p, the CPU starts to bottleneck many GPUs in the dataset, meaning the score reflects the test rig's processor as much as the GPU itself. At 4K, even high-end GPUs become VRAM and bandwidth-limited in ways that change the ranking order. 1440p is the resolution range where GPU-to-GPU differences are most clearly visible and where most of this dataset's target market actually plays.
 
@@ -355,13 +357,13 @@ python looker/build_dashboard.py
 
 ## Limitations
 
-### Single benchmark source — by design, not by accident
+### Benchmark sourcing — primary + targeted supplement
 
-The most significant constraint in this project is that all GPU performance data comes from a single source (Tom's Hardware GPU Hierarchy, cross-referenced with Hardware Unboxed generation reviews). This was a deliberate decision, not an oversight.
+GPU performance data comes from two sources: Tom's Hardware GPU Hierarchy (primary) and Passmark G3D Mark (supplement for 8 GB VRAM-constrained budget cards). This was a deliberate two-source approach, not an inconsistency.
 
-GPU benchmarks are notoriously difficult to combine across sources. A score from PassMark, 3DMark, or a reviewer's custom test suite depends heavily on the specific test rig — CPU, RAM speed, storage, core count configuration, driver version, game mix and resolution. A GPU that scores 110 in one reviewer's suite and 95 in another's may not actually be 15% faster in any meaningful sense; the delta could be RAM latency, CPU bottleneck, or simply a different game selection. Mixing sources would introduce systematic discrepancies that look like real performance differences but are not.
+GPU benchmarks are notoriously difficult to combine across sources. A score from 3DMark or a reviewer's custom test suite depends heavily on the specific test rig — CPU, RAM speed, storage, driver version, game mix and resolution. Mixing sources freely would introduce systematic discrepancies that look like real performance differences but are not.
 
-Using a single consistent source means the relative values within the dataset are trustworthy even if the absolute numbers don't match any one specific review you might read elsewhere. The trade-off is coverage — some GPU generations have fewer data points than would be ideal.
+Tom's Hardware Ultra preset is the right primary source for mid-range and high-end cards, where it reveals real performance differences. But for 8 GB VRAM cards at 1440p Ultra, the preset triggers VRAM spills that produce misleadingly low scores — scores that reflect VRAM headroom, not GPU performance. Passmark G3D Mark, with its large submission pool across varied real-world settings, is more representative for those specific cards. Both sources are reconciled to the same RTX 3080 = 100 scale. The trade-off is that a small number of relative values carry more uncertainty than the majority, and this is noted in the seed CSV where it applies.
 
 ### Other constraints
 

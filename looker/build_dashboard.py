@@ -67,9 +67,8 @@ cpu_sh  = cpu_sh.groupby("year")[["amd_cpu_share","intel_cpu_share"]].mean().res
 gen_agg["fg_ratio"] = (gen_agg["avg_ppd_with_fg"] / gen_agg["avg_ppd_native"]).round(2)
 
 # ── Street price enrichment ───────────────────────────────────────────────────
+# street_price_usd is already in gpu_analysis (loaded from seed CSV by notebook 01).
 import numpy as np
-seed_raw = pd.read_csv(ROOT / "data" / "raw" / "gpu_specs_seed.csv")
-gpus = gpus.merge(seed_raw[["gpu_name","street_price_usd"]], on="gpu_name", how="left")
 gpus["street_price_2024_adj"] = (
     gpus["street_price_usd"] * (gpus["launch_price_2024_adj"] / gpus["launch_price_usd"])
 ).round(2)
@@ -488,6 +487,7 @@ for vi, vendor in enumerate(["Nvidia","AMD","Intel"]):
         text=labels_ann,
         textposition="outside",
         textfont=dict(size=10, color="#444444"),
+        cliponaxis=False,
         hovertemplate=f"<b>{vendor}</b><br>%{{x}}<br>Avg VRAM: %{{y:.1f}}GB<extra></extra>",
     ))
 
@@ -508,7 +508,7 @@ fig7.update_layout(
     barmode="group",
     xaxis=dict(gridcolor=GRID, linecolor=BORDER, tickfont=dict(color=SUBTEXT)),
     yaxis=dict(title="Average VRAM (GB)", gridcolor=GRID, linecolor=BORDER,
-               tickfont=dict(color=SUBTEXT)),
+               tickfont=dict(color=SUBTEXT), range=[0, 34]),
     height=250,
 )
 
@@ -670,7 +670,7 @@ html = f"""<!DOCTYPE html>
   </div>
   <div class="stat">
     <div class="stat-num" style="color:#0071c5">12 GB</div>
-    <div class="stat-text">Intel Arc B580 VRAM at $249<br>Nvidia RTX 4060 Ti ships 8 GB at $399</div>
+    <div class="stat-text">Arc B580 VRAM at $249 — RTX 4060 Ti<br>gets you 8 GB for $150 more</div>
   </div>
 </div>
 
