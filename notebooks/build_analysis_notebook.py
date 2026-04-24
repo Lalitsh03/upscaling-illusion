@@ -288,24 +288,16 @@ for ax_idx, (ax, ppd_col, subtitle) in enumerate(zip(
     for vi, vendor in enumerate(vendors_ordered):
         sub = bracket_agg[bracket_agg['vendor'] == vendor]
         # Build aligned arrays — use NaN where vendor has no GPU in bracket
-        heights, counts_arr = [], []
+        heights = []
         for lbl in bracket_list:
             row = sub[sub['price_bracket'] == lbl]
             heights.append(row[ppd_col].values[0] if len(row) else float('nan'))
-            counts_arr.append(row['n_gpus'].values[0] if len(row) else 0)
 
         bars = ax.bar(
             x + offsets[vi], heights, width=bar_w,
             color=VENDOR_COLOR[vendor], label=vendor,
             zorder=3, alpha=0.90, edgecolor='white', linewidth=0.5
         )
-
-        # Label bar with GPU count
-        for rect, h, n in zip(bars, heights, counts_arr):
-            if not np.isnan(h) and n > 0:
-                ax.text(rect.get_x() + rect.get_width() / 2, h + 0.002,
-                        f'n={n}', ha='center', va='bottom',
-                        fontsize=7, color='#555555')
 
     # Annotate "Nvidia only" on Extreme bracket
     ax.text(x[-1], 0.005, 'Nvidia\\nonly', ha='center', va='bottom',
