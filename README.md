@@ -1,7 +1,7 @@
 # The Upscaling Illusion
 ### Separating silicon progress from software illusion, 2018–2025
 
-> An end to end data analysis project examining whether DLSS, FSR, and XeSS genuinely delivered better value per dollar across GPU generations, or whether manufacturers used AI upscaling as cover to slow raw hardware progress while raising prices.
+> An end to end data analysis project examining whether DLSS, FSR, and XeSS genuinely delivered better value per dollar across GPU generations, or whether manufacturers used AI upscaling as cover for slow raw hardware progress while raising prices.
 
 > 🔗 [**Open Interactive Dashboard**](https://lalitsh03.github.io/upscaling-illusion/looker/dashboard.html)
 
