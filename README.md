@@ -146,6 +146,12 @@ Nvidia GPU silicon roughly doubled in 7 years - faster than Intel CPU and roughl
 
 The difference is what each industry does with that slowdown. CPU manufacturers have no equivalent to frame generation - they have to ship the silicon and explain the smaller numbers. GPU manufacturers can point to effective PPD with DLSS or FSR, which makes a +19% silicon generation look like a much larger leap in marketing terms. The AI features are real, but they also provide cover for hardware improvement curves that are flattening across the board.
 
+**Two important caveats this dataset does not fully capture:**
+
+- **AMD X3D CPUs are absent from this analysis.** The Ryzen 5800X3D, 7800X3D, and 9800X3D use 3D V-Cache - a stacked cache layer that delivers 20-40% gaming performance uplift over the base Zen variant without any IPC or clock speed increase. PassMark single-thread scores, which measure raw IPC, do not reflect this. In gaming workloads specifically - the most cache-sensitive CPU workload - AMD's X3D line represents a genuine architectural leap that sits outside what this trajectory chart captures. The "AMD CPU decelerating" reading above applies to raw IPC progress, not to gaming-specific performance, where AMD's recent trajectory looks considerably stronger.
+
+- **Arrow Lake's launch numbers are not the full story.** Intel's Core Ultra 200S series launched with disappointing single-thread and gaming numbers, but received significant microcode and driver updates post-launch that recovered a portion of the gap. The -1% figure in the table above reflects launch-window benchmarks. Post-patch, Arrow Lake is a more competitive product than the initial numbers suggest - though it still does not represent the kind of generational jump that Alder Lake (12th Gen) delivered when Intel last made a major architectural shift.
+
 ![CPU vs GPU Trajectory](data/processed/chart_cpu_gpu_analysis.png)
 
 ### The AMD brand halo story is more complicated than it first appears
@@ -164,6 +170,14 @@ But the story does not end there. AMD GPU share recovered every single year afte
 | 2024 | 22% | 43% |
 
 Two explanations compete here. The first is that the post-2021 recovery is simply the RX 7000 series being genuinely competitive hardware - nothing more. The second is a **delayed brand halo**: by 2022 AMD's CPU dominance had been mainstream for two to three years, and the enthusiast narrative had shifted toward full AMD platform builds (Ryzen CPU + Radeon GPU) as a coherent value play. On that reading, the CPU mindshare didn't convert immediately because Nvidia's RTX 3000 DLSS advantage was too strong to overcome mid-cycle - but by the time the next generation launched, enough buyers were already AMD-curious that the RX 7000 had an easier entry. The data cannot separate these effects. What it does show clearly is that **Nvidia's DLSS ecosystem created stickiness that pure brand sentiment could not break in the short term**, and that whatever drove the recovery, it took a full hardware cycle to materialise.
+
+What the market share table also does not show is *why* AMD's CPU share rebounded from 39% in 2023 back to 43% in 2024 after a dip. Three factors are running together in that number and the data here cannot isolate them cleanly:
+
+- **3D V-Cache (X3D)** - the Ryzen 7800X3D and 9800X3D became the clear recommendation for gaming PC builds from 2023 onwards. Reviews consistently placed them ahead of Intel's best in gaming workloads by a meaningful margin, driven by the stacked cache architecture rather than raw IPC. For enthusiast and gaming-focused buyers - the segment most likely to show up in Steam Hardware Survey data and JPR estimates - X3D made AMD the default choice in a way that Ryzen alone had not fully achieved.
+- **Power efficiency** - AMD's Zen 4 and Zen 5 architectures deliver competitive performance at significantly lower TDP than Intel's 13th and 14th Gen, which became a liability for Intel when reports of degraded high-end Intel CPUs emerged in 2023-2024. Builders looking at thermals and long-term reliability shifted toward AMD platforms.
+- **Intel's 13th/14th Gen instability issues** - a widely reported issue with Intel's top-end desktop CPUs running at voltages that caused permanent degradation affected builder confidence in that segment precisely when AMD's X3D line was at its most competitive. This is not reflected anywhere in benchmark data but is a real factor in purchase decisions during that period.
+
+These three forces together - not raw IPC growth alone - explain AMD's CPU share recovery and make the brand halo question more complicated than a simple correlation between CPU share and GPU share.
 
 ![AMD Brand Halo](data/processed/chart_brand_halo_analysis.png)
 
