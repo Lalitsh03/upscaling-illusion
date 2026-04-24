@@ -132,9 +132,19 @@ The VRAM per price bracket analysis shows AMD and Intel consistently offering mo
 
 ![VRAM by Price Bracket](data/processed/chart_vram_by_bracket.png)
 
-### Generational leaps are getting smaller in raw terms
+### GPU silicon kept pace with CPUs overall - but both are slowing, and only GPUs have a way to hide it
 
-The RTX 4000 → RTX 5000 native PPD improvement (~26%) was the smallest single-generation jump in the dataset. CPUs and GPUs grew at roughly comparable rates in raw terms but GPU manufacturers leaned into AI features to make each generation feel more significant than the silicon alone justified.
+Stripping out price effects and looking at raw benchmark scores only:
+
+| | Period | Raw performance growth | Smallest single-gen jump |
+|---|---|---|---|
+| Nvidia GPU | 2018-2025 | +99% | RTX 4000 - 5000: **+19%** |
+| Intel CPU (single-thread) | 2018-2024 | +64% | Arrow Lake vs 14th Gen: **-1%** (decline) |
+| AMD CPU (single-thread) | 2019-2024 | +110% | Zen 4 - Zen 5: **+14%** |
+
+Nvidia GPU silicon roughly doubled in 7 years - faster than Intel CPU and roughly in line with AMD CPU. GPU progress has not stalled in absolute terms. But the per-generation momentum is clearly slowing: the RTX 4000 - 5000 jump (+19%) was the smallest of Nvidia's four-generation run, smaller even than the RTX 2000 - 3000 jump (+23%). Intel CPU shows the same pattern more starkly - Arrow Lake delivered no single-thread improvement at all. AMD CPU decelerated from +45% (Zen 2 - 3) to +14% (Zen 4 - 5).
+
+The difference is what each industry does with that slowdown. CPU manufacturers have no equivalent to frame generation - they have to ship the silicon and explain the smaller numbers. GPU manufacturers can point to effective PPD with DLSS or FSR, which makes a +19% silicon generation look like a much larger leap in marketing terms. The AI features are real, but they also provide cover for hardware improvement curves that are flattening across the board.
 
 ![CPU vs GPU Trajectory](data/processed/chart_cpu_gpu_analysis.png)
 
