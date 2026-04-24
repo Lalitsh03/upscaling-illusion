@@ -655,7 +655,7 @@ html = f"""<!DOCTYPE html>
 <!-- Header -->
 <div class="header">
   <h1>The Upscaling Illusion: GPU Value Analysis 2018–2025</h1>
-  <p>Did AI upscaling genuinely improve value, or did it mask stagnant hardware progress while prices rose?</p>
+  <p>Separating silicon progress from software illusion, 2018&#8211;2025</p>
 </div>
 
 <!-- Key stat callouts -->
