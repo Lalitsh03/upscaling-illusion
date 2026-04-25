@@ -380,8 +380,6 @@ for ax, vendor in zip(axes, ['Nvidia', 'AMD', 'Intel']):
     ax.set_title(vendor, fontsize=13, fontweight='bold', color=brand_col, pad=8)
     ax.set_ylabel('Avg Price (2024-adj USD)', fontsize=10)
     ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda v, _: f'${v:,.0f}'))
-    legend = ax.legend(fontsize=9)
-    legend.get_frame().set_edgecolor('#dddddd')
 
 fig.suptitle(
     'MSRP vs What People Actually Paid\\n'
