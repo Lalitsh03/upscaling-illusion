@@ -123,19 +123,6 @@ for col_idx, vendor in enumerate(["Nvidia", "AMD", "Intel"], start=1):
         hovertemplate=f"<b>%{{x}}</b><br>FG PPD: %{{y:.3f}}<extra></extra>",
     ), row=1, col=col_idx)
 
-    # FG ratio label — added as a text trace in the same legendgroup so it
-    # disappears automatically when the user toggles Frame Gen off
-    last = df.iloc[-1]
-    fig1.add_trace(go.Scatter(
-        x=[last["generation"]],
-        y=[last["avg_ppd_with_fg"] * 1.05],
-        mode="text",
-        text=[f"<b>{last['fg_ratio']}× Frame Gen</b>"],
-        textposition="middle left",
-        textfont=dict(color=brand_col, size=10),
-        legendgroup="fg", showlegend=False,
-        hoverinfo="skip",
-    ), row=1, col=col_idx)
 
     # Vendor label INSIDE the panel — top-left corner using paper coords
     # xref/yref use paper coordinates: col1 ≈ 0.10, col2 ≈ 0.44, col3 ≈ 0.78

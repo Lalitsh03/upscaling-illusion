@@ -161,16 +161,6 @@ for ax, vendor in zip(axes, vendors):
             color=brand_col, marker='^', linewidth=2.8, markersize=9,
             label='Upscaling + Frame Gen', zorder=4)
 
-    # Annotate the final-gen FG ratio in brand colour
-    last = df.iloc[-1]
-    ax.annotate(
-        f"FG ratio: {last['fg_ratio']}×",
-        xy=(last['generation'], last['avg_ppd_with_fg']),
-        xytext=(0.58, 0.90), textcoords='axes fraction',
-        fontsize=9, color=brand_col, fontweight='bold',
-        arrowprops=dict(arrowstyle='->', color=brand_col, lw=1.3),
-    )
-
     ax.set_title(vendor, fontsize=14, fontweight='bold', color=brand_col, pad=8)
     ax.tick_params(labelsize=9)
     ax.set_xlabel('Generation', fontsize=10)
