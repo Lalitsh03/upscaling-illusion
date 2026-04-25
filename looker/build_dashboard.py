@@ -454,12 +454,12 @@ for col_idx, vendor in enumerate(["Nvidia", "AMD", "Intel"], start=1):
         ),
     ), row=1, col=col_idx)
 
-    # Vendor label — pinned to left edge of each panel to avoid overlapping lines
-    x_paper = [0.01, 0.37, 0.73][col_idx - 1]
+    # Vendor label — pinned to right edge of each panel to avoid overlapping lines
+    x_paper = [0.27, 0.63, 0.99][col_idx - 1]
     fig6.add_annotation(
         x=x_paper, y=0.97, xref="paper", yref="paper",
         text=f"<b>{vendor}</b>", showarrow=False,
-        font=dict(color=brand_col, size=14), xanchor="left", yanchor="top",
+        font=dict(color=brand_col, size=14), xanchor="right", yanchor="top",
     )
 
 fig6.update_xaxes(tickfont=dict(size=9, color=SUBTEXT), tickangle=-30, gridcolor=GRID, linecolor=BORDER)
