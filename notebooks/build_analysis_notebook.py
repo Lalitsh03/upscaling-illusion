@@ -330,20 +330,19 @@ Street prices sourced from GPU market reports and price-tracking data (2020–20
 """))
 
 cells.append(code("""\
-# Compare MSRP-based native PPD vs street-price-based native PPD per generation
+# Compare avg MSRP vs avg street price (actual dollars) per generation
 gen_street = gpus.groupby(['vendor','generation']).agg(
     gen_launch_year = ('launch_year', 'min'),
-    ppd_msrp        = ('ppd_msrp_native', 'mean'),
-    ppd_street      = ('ppd_street_native', 'mean'),
-).reset_index().round(5)
+    avg_msrp        = ('launch_price_2024_adj', 'mean'),
+    avg_street      = ('street_price_2024_adj', 'mean'),
+).reset_index().round(0)
 
 gen_street['price_gap_pct'] = (
-    (gpus.groupby(['vendor','generation'])['street_price_usd'].mean() /
-     gpus.groupby(['vendor','generation'])['launch_price_usd'].mean() - 1) * 100
-).round(1).values
+    (gen_street['avg_street'] - gen_street['avg_msrp']) / gen_street['avg_msrp'] * 100
+).round(1)
 
-print("=== MSRP PPD vs Street Price PPD (native) ===")
-print(gen_street[['vendor','generation','gen_launch_year','ppd_msrp','ppd_street','price_gap_pct']]
+print("=== Avg MSRP vs Avg Street Price (2024-adj USD) ===")
+print(gen_street[['vendor','generation','gen_launch_year','avg_msrp','avg_street','price_gap_pct']]
       .sort_values(['vendor','gen_launch_year']).to_string(index=False))
 print()
 print("Worst affected: RTX 3000 and RX 6000 series where street premiums were highest.")
@@ -365,46 +364,35 @@ for ax, vendor in zip(axes, ['Nvidia', 'AMD', 'Intel']):
     gens = sub['generation'].tolist()
     x    = range(len(gens))
 
-    # MSRP line — dashed, lighter
-    ax.plot(x, sub['ppd_msrp'], color=brand_col, linewidth=2.2, linestyle='--',
-            marker='o', markersize=8, label='MSRP price', alpha=0.6, zorder=3)
-    # Street line — solid
-    ax.plot(x, sub['ppd_street'], color=brand_col, linewidth=2.8,
-            marker='s', markersize=9, label='Street price (actual)', zorder=4)
+    # MSRP line — dashed, lighter (plotted first so fill_between references it correctly)
+    ax.plot(x, sub['avg_msrp'], color=brand_col, linewidth=2.2, linestyle='--',
+            marker='o', markersize=8, label='MSRP (launch price)', alpha=0.6, zorder=3)
+    # Street price line — solid, on top
+    ax.plot(x, sub['avg_street'], color=brand_col, linewidth=2.8,
+            marker='s', markersize=9, label='Street price (actual paid)', zorder=4)
 
-    # Shade the gap
-    ax.fill_between(x, sub['ppd_msrp'], sub['ppd_street'],
-                    color=brand_col, alpha=0.10, zorder=1)
-
-    # Annotate largest gap
-    max_gap_idx = (sub['ppd_msrp'] - sub['ppd_street']).abs().idxmax()
-    max_row = sub.loc[max_gap_idx]
-    gap_pct = abs((max_row['ppd_msrp'] - max_row['ppd_street']) / max_row['ppd_msrp'] * 100)
-    if gap_pct > 1:
-        gi = sub.index.get_loc(max_gap_idx)
-        ax.annotate(f"-{gap_pct:.0f}% PPD\\n(street vs MSRP)",
-                    xy=(gi, max_row['ppd_street']),
-                    xytext=(gi + 0.3, max_row['ppd_street'] * 0.88),
-                    fontsize=8, color='#cc3333',
-                    arrowprops=dict(arrowstyle='->', color='#cc3333', lw=1.0))
+    # Shade the gap between MSRP and street price
+    ax.fill_between(x, sub['avg_msrp'], sub['avg_street'],
+                    color=brand_col, alpha=0.12, zorder=1)
 
     ax.set_xticks(x)
     ax.set_xticklabels(gens, rotation=25, ha='right', fontsize=8)
     ax.set_title(vendor, fontsize=13, fontweight='bold', color=brand_col, pad=8)
-    ax.set_ylabel('Native PPD', fontsize=10)
+    ax.set_ylabel('Avg Price (2024-adj USD)', fontsize=10)
+    ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda v, _: f'${v:,.0f}'))
     legend = ax.legend(fontsize=9)
     legend.get_frame().set_edgecolor('#dddddd')
 
 fig.suptitle(
-    'MSRP vs Street Price: How the RTX 3000-era Value Story Changes\\n'
-    'Dashed = MSRP  |  Solid = what people actually paid  |  Shaded area = the gap',
+    'MSRP vs What People Actually Paid\\n'
+    'Dashed = official launch price  |  Solid = avg street price  |  Shaded area = the gap',
     fontsize=13, fontweight='bold', color='#1a1a1a', y=1.04
 )
 plt.tight_layout()
 plt.savefig('../data/processed/chart_msrp_vs_street.png', dpi=150,
             bbox_inches='tight', facecolor=BG)
 plt.show()
-print("\\nKey takeaway: RTX 3000 native PPD drops significantly when real prices are used.")
+print("\\nKey takeaway: RTX 3000 street prices ran ~35% over MSRP during the 2020-21 shortage.")
 print("Nvidia's RTX 3000 value story looked far better on paper than in practice for buyers.")
 """))
 
