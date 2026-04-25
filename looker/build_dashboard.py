@@ -410,11 +410,19 @@ gen_street = gpus.groupby(["vendor","generation"]).agg(
 
 fig6 = make_subplots(rows=1, cols=3, shared_yaxes=False, horizontal_spacing=0.08)
 
+# brand hex → rgba fill colour (10% opacity)
+FILL_COLOR = {
+    "Nvidia": "rgba(118,185,0,0.12)",
+    "AMD":    "rgba(237,28,36,0.12)",
+    "Intel":  "rgba(0,113,197,0.12)",
+}
+
 for col_idx, vendor in enumerate(["Nvidia", "AMD", "Intel"], start=1):
     brand_col = VENDOR_COLOR[vendor]
     sub = gen_street[gen_street["vendor"] == vendor].sort_values("gen_launch_year").reset_index(drop=True)
     show_leg = (col_idx == 1)
 
+    # MSRP line — added first so tonexty fills up/down to it
     fig6.add_trace(go.Scatter(
         x=sub["generation"], y=sub["avg_msrp"],
         mode="lines+markers", name="MSRP (launch price)",
@@ -423,9 +431,10 @@ for col_idx, vendor in enumerate(["Nvidia", "AMD", "Intel"], start=1):
         opacity=0.55,
         legendgroup="msrp", showlegend=show_leg,
         hovertemplate="<b>%{x}</b><br>Avg MSRP: $%{y:,.0f}<extra></extra>",
+        fill=None,
     ), row=1, col=col_idx)
 
-    # customdata: [street_price, pct_premium]
+    # Street price line — fills to MSRP trace with brand colour
     pct = ((sub["avg_street"] - sub["avg_msrp"]) / sub["avg_msrp"] * 100).round(1)
     street_custom = list(zip(sub["avg_street"], pct))
     fig6.add_trace(go.Scatter(
@@ -433,6 +442,8 @@ for col_idx, vendor in enumerate(["Nvidia", "AMD", "Intel"], start=1):
         mode="lines+markers", name="Street price (actual paid)",
         line=dict(color=brand_col, width=2.8),
         marker=dict(size=9, symbol="square"),
+        fill="tonexty",
+        fillcolor=FILL_COLOR[vendor],
         legendgroup="street", showlegend=show_leg,
         customdata=street_custom,
         hovertemplate=(
@@ -443,19 +454,7 @@ for col_idx, vendor in enumerate(["Nvidia", "AMD", "Intel"], start=1):
         ),
     ), row=1, col=col_idx)
 
-    # annotate largest gap
-    gaps = sub["avg_street"] - sub["avg_msrp"]
-    max_i = gaps.idxmax()
-    if gaps[max_i] > 20:
-        p = gaps[max_i] / sub.loc[max_i, "avg_msrp"] * 100
-        fig6.add_annotation(
-            x=sub.loc[max_i, "generation"], y=sub.loc[max_i, "avg_street"],
-            text=f"<b>+{p:.0f}% over MSRP</b>",
-            showarrow=True, arrowhead=2, arrowcolor="#cc3333", arrowwidth=1.4,
-            ax=30, ay=-35, font=dict(color="#cc3333", size=10),
-            row=1, col=col_idx,
-        )
-
+    # Vendor label only — no gap annotations
     x_paper = [0.10, 0.44, 0.78][col_idx - 1]
     fig6.add_annotation(
         x=x_paper, y=0.97, xref="paper", yref="paper",
