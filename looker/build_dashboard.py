@@ -116,23 +116,26 @@ for col_idx, vendor in enumerate(["Nvidia", "AMD", "Intel"], start=1):
     fig1.add_trace(go.Scatter(
         x=df["generation"], y=df["avg_ppd_with_fg"],
         mode="lines+markers",
-        name=f"+ Frame Gen ({vendor})",
+        name="Frame Gen",
         line=dict(color=brand_col, width=3),
         marker=dict(size=10, symbol="triangle-up"),
-        legendgroup=f"fg_{vendor}", showlegend=True,
+        legendgroup="fg", showlegend=(col_idx == 1),
         hovertemplate=f"<b>%{{x}}</b><br>FG PPD: %{{y:.3f}}<extra></extra>",
     ), row=1, col=col_idx)
 
-    # FG ratio annotation on final gen
+    # FG ratio label — added as a text trace in the same legendgroup so it
+    # disappears automatically when the user toggles Frame Gen off
     last = df.iloc[-1]
-    fig1.add_annotation(
-        x=last["generation"], y=last["avg_ppd_with_fg"],
-        text=f"<b>FG {last['fg_ratio']}×</b>",
-        showarrow=True, arrowhead=2, arrowcolor=brand_col, arrowwidth=1.5,
-        ax=0, ay=-35,
-        font=dict(color=brand_col, size=11),
-        row=1, col=col_idx,
-    )
+    fig1.add_trace(go.Scatter(
+        x=[last["generation"]],
+        y=[last["avg_ppd_with_fg"] * 1.05],
+        mode="text",
+        text=[f"<b>{last['fg_ratio']}× Frame Gen</b>"],
+        textposition="middle left",
+        textfont=dict(color=brand_col, size=10),
+        legendgroup="fg", showlegend=False,
+        hoverinfo="skip",
+    ), row=1, col=col_idx)
 
     # Vendor label INSIDE the panel — top-left corner using paper coords
     # xref/yref use paper coordinates: col1 ≈ 0.10, col2 ≈ 0.44, col3 ≈ 0.78
