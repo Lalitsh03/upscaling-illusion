@@ -113,6 +113,8 @@ for col_idx, vendor in enumerate(["Nvidia", "AMD", "Intel"], start=1):
         hovertemplate="<b>%{x}</b><br>Upscaling PPD: %{y:.3f}<extra></extra>",
     ), row=1, col=col_idx)
 
+    # Frame Gen trace — customdata carries [native_ppd, fg_ratio] for rich hover
+    fg_custom = list(zip(df["avg_ppd_native"].round(3), df["fg_ratio"]))
     fig1.add_trace(go.Scatter(
         x=df["generation"], y=df["avg_ppd_with_fg"],
         mode="lines+markers",
@@ -120,7 +122,14 @@ for col_idx, vendor in enumerate(["Nvidia", "AMD", "Intel"], start=1):
         line=dict(color=brand_col, width=3),
         marker=dict(size=10, symbol="triangle-up"),
         legendgroup="fg", showlegend=(col_idx == 1),
-        hovertemplate=f"<b>%{{x}}</b><br>FG PPD: %{{y:.3f}}<extra></extra>",
+        customdata=fg_custom,
+        hovertemplate=(
+            "<b>%{x}</b><br>"
+            "Effective PPD (with Frame Gen): %{y:.3f}<br>"
+            "Native PPD: %{customdata[0]:.3f}<br>"
+            "Frame Gen multiplier: %{customdata[1]}× native"
+            "<extra></extra>"
+        ),
     ), row=1, col=col_idx)
 
 
@@ -392,40 +401,61 @@ fig5.update_layout(
     height=360,
 )
 
-# ── Chart 6: MSRP vs Street Price ────────────────────────────────────────────
+# ── Chart 6: MSRP vs Street Price (actual dollar amounts) ────────────────────
 gen_street = gpus.groupby(["vendor","generation"]).agg(
     gen_launch_year = ("launch_year", "min"),
-    ppd_msrp        = ("ppd_msrp_native", "mean"),   # perf / launch_price_2024_adj (MSRP)
-    ppd_street      = ("ppd_street_native", "mean"),  # perf / street_price_2024_adj (actual paid)
-).reset_index().round(5)
+    avg_msrp        = ("launch_price_2024_adj", "mean"),
+    avg_street      = ("street_price_2024_adj", "mean"),
+).reset_index().round(0)
 
 fig6 = make_subplots(rows=1, cols=3, shared_yaxes=False, horizontal_spacing=0.08)
 
 for col_idx, vendor in enumerate(["Nvidia", "AMD", "Intel"], start=1):
     brand_col = VENDOR_COLOR[vendor]
-    sub = gen_street[gen_street["vendor"] == vendor].sort_values("gen_launch_year")
+    sub = gen_street[gen_street["vendor"] == vendor].sort_values("gen_launch_year").reset_index(drop=True)
     show_leg = (col_idx == 1)
 
     fig6.add_trace(go.Scatter(
-        x=sub["generation"], y=sub["ppd_msrp"],
-        mode="lines+markers", name="MSRP price",
+        x=sub["generation"], y=sub["avg_msrp"],
+        mode="lines+markers", name="MSRP (launch price)",
         line=dict(color=brand_col, width=2, dash="dash"),
         marker=dict(size=7, symbol="circle"),
         opacity=0.55,
         legendgroup="msrp", showlegend=show_leg,
-        hovertemplate="<b>%{x}</b><br>MSRP PPD: %{y:.3f}<extra></extra>",
+        hovertemplate="<b>%{x}</b><br>Avg MSRP: $%{y:,.0f}<extra></extra>",
     ), row=1, col=col_idx)
 
+    # customdata: [street_price, pct_premium]
+    pct = ((sub["avg_street"] - sub["avg_msrp"]) / sub["avg_msrp"] * 100).round(1)
+    street_custom = list(zip(sub["avg_street"], pct))
     fig6.add_trace(go.Scatter(
-        x=sub["generation"], y=sub["ppd_street"],
-        mode="lines+markers", name="Street price (actual)",
+        x=sub["generation"], y=sub["avg_street"],
+        mode="lines+markers", name="Street price (actual paid)",
         line=dict(color=brand_col, width=2.8),
         marker=dict(size=9, symbol="square"),
         legendgroup="street", showlegend=show_leg,
-        hovertemplate="<b>%{x}</b><br>Street PPD: %{y:.3f}<extra></extra>",
+        customdata=street_custom,
+        hovertemplate=(
+            "<b>%{x}</b><br>"
+            "Avg street price: $%{customdata[0]:,.0f}<br>"
+            "Premium over MSRP: %{customdata[1]:+.1f}%"
+            "<extra></extra>"
+        ),
     ), row=1, col=col_idx)
 
-    # Vendor label inside panel
+    # annotate largest gap
+    gaps = sub["avg_street"] - sub["avg_msrp"]
+    max_i = gaps.idxmax()
+    if gaps[max_i] > 20:
+        p = gaps[max_i] / sub.loc[max_i, "avg_msrp"] * 100
+        fig6.add_annotation(
+            x=sub.loc[max_i, "generation"], y=sub.loc[max_i, "avg_street"],
+            text=f"<b>+{p:.0f}% over MSRP</b>",
+            showarrow=True, arrowhead=2, arrowcolor="#cc3333", arrowwidth=1.4,
+            ax=30, ay=-35, font=dict(color="#cc3333", size=10),
+            row=1, col=col_idx,
+        )
+
     x_paper = [0.10, 0.44, 0.78][col_idx - 1]
     fig6.add_annotation(
         x=x_paper, y=0.97, xref="paper", yref="paper",
@@ -434,16 +464,17 @@ for col_idx, vendor in enumerate(["Nvidia", "AMD", "Intel"], start=1):
     )
 
 fig6.update_xaxes(tickfont=dict(size=9, color=SUBTEXT), tickangle=-30, gridcolor=GRID, linecolor=BORDER)
-fig6.update_yaxes(title_text="Native PPD", title_font=dict(size=10, color=SUBTEXT),
-                  gridcolor=GRID, linecolor=BORDER, tickfont=dict(color=SUBTEXT), row=1, col=1)
-fig6_layout = {**BASE_LAYOUT, "margin": dict(l=40, r=20, t=45, b=75)}
+fig6.update_yaxes(tickprefix="$", tickformat=",.0f",
+                  title_text="Avg Price (2024-adjusted USD)", title_font=dict(size=10, color=SUBTEXT),
+                  gridcolor=GRID, linecolor=BORDER, tickfont=dict(color=SUBTEXT))
+fig6_layout = {**BASE_LAYOUT, "margin": dict(l=60, r=20, t=45, b=75)}
 fig6.update_layout(
     **fig6_layout,
     legend=dict(orientation="h", yanchor="bottom", y=-0.52, xanchor="center", x=0.5,
                 bgcolor="#ffffff", bordercolor=BORDER, borderwidth=1, font=dict(size=9, color=TEXT)),
     title=dict(
-        text="<b>MSRP vs What People Actually Paid: How the Value Story Changes</b><br>"
-             "<span style='font-size:11px;color:#666'>Dashed = MSRP  ·  Solid = estimated average street price  ·  RTX 3000 gap is largest</span>",
+        text="<b>MSRP vs What People Actually Paid</b><br>"
+             "<span style='font-size:11px;color:#666'>Dashed = official launch price  ·  Solid = avg street price  ·  Hover for exact premium %</span>",
         font=dict(size=13, color=TEXT), x=0.05,
     ),
     height=250,
@@ -466,12 +497,20 @@ fig7 = go.Figure()
 
 for vi, vendor in enumerate(["Nvidia","AMD","Intel"]):
     sub = vram_bracket[vram_bracket["vendor"] == vendor]
-    heights, labels_ann = [], []
+    heights, labels_ann, hover_custom = [], [], []
     for lbl in blbls_v:
         row = sub[sub["price_bracket_v"] == lbl]
         h = round(row["vram_gb"].values[0], 1) if len(row) else None
         heights.append(h)
         labels_ann.append(f"{h:.0f}GB" if h else "")
+        # build GPU name list for this bracket+vendor
+        mask = (gpus["vendor"] == vendor) & (gpus["price_bracket_v"] == lbl)
+        gpu_rows = gpus[mask][["gpu_name","vram_gb"]].sort_values("vram_gb")
+        if len(gpu_rows):
+            lines = "<br>".join(f"  {r.gpu_name} ({int(r.vram_gb)}GB)" for _, r in gpu_rows.iterrows())
+            hover_custom.append(f"{len(gpu_rows)} GPU{'s' if len(gpu_rows)>1 else ''} averaged:<br>{lines}")
+        else:
+            hover_custom.append("")
 
     fig7.add_trace(go.Bar(
         x=blbls_v, y=heights,
@@ -482,7 +521,13 @@ for vi, vendor in enumerate(["Nvidia","AMD","Intel"]):
         textposition="outside",
         textfont=dict(size=10, color="#444444"),
         cliponaxis=False,
-        hovertemplate=f"<b>{vendor}</b><br>%{{x}}<br>Avg VRAM: %{{y:.1f}}GB<extra></extra>",
+        customdata=hover_custom,
+        hovertemplate=(
+            f"<b>{vendor}</b> · %{{x}}<br>"
+            "Avg VRAM: <b>%{y:.0f}GB</b><br>"
+            "%{customdata}"
+            "<extra></extra>"
+        ),
     ))
 
 # 8GB threshold line
