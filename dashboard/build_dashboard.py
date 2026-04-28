@@ -1,6 +1,6 @@
 """
-Generates looker/dashboard.html — interactive Plotly dashboard for The Upscaling Illusion.
-Run with: python build_dashboard.py   (from the looker/ directory)
+Generates dashboard/dashboard.html — interactive Plotly dashboard for The Upscaling Illusion.
+Run with: python build_dashboard.py   (from the dashboard/ directory)
 
 Light theme  |  Brand colours: Nvidia #76b900 · AMD #ED1C24 · Intel #0071c5
 """

@@ -3,6 +3,11 @@
 
 > An end to end data analysis project examining whether DLSS, FSR, and XeSS genuinely delivered better value per dollar across GPU generations, or whether manufacturers used AI upscaling as cover for slow raw hardware progress while raising prices.
 
+<<<<<<< Updated upstream
+=======
+> 🔗 [**Open Interactive Dashboard**](https://lalitsh03.github.io/upscaling-illusion/dashboard/dashboard.html)
+
+>>>>>>> Stashed changes
 ---
 
 ## Proposed Question:
@@ -22,7 +27,7 @@ This project investigates four angles:
 
 ## Interactive Dashboard
 
-[![Dashboard Preview](data/processed/chart_dashboard_preview.png)](https://lalitsh03.github.io/upscaling-illusion/looker/dashboard.html)
+[![Dashboard Preview](data/processed/chart_dashboard_preview.png)](https://lalitsh03.github.io/upscaling-illusion/dashboard/dashboard.html)
 
 *Click the image to open the live interactive version*
 
@@ -264,7 +269,7 @@ Open `data/gpu_analysis.db` in DBeaver and run any query from `sql/02_analysis_q
 ├── sql/
 │   ├── 01_schema.sql              # SQLite schema documentation
 │   └── 02_analysis_queries.sql   # 9 analysis queries - DBeaver-ready
-└── looker/
+└── dashboard/
     └── dashboard.html             # Standalone interactive dashboard (open in any browser)
 ```
 
@@ -380,8 +385,8 @@ jupyter notebook notebooks/01_data_collection_and_cleaning.ipynb
 jupyter notebook notebooks/02_analysis.ipynb
 
 # 4. Regenerate the interactive HTML dashboard
-python looker/build_dashboard.py
-# Output: looker/dashboard.html - open in any browser
+python dashboard/build_dashboard.py
+# Output: dashboard/dashboard.html - open in any browser
 ```
 
 **SQL:** Open `data/gpu_analysis.db` in DBeaver, then run any query from `sql/02_analysis_queries.sql`.
@@ -438,7 +443,7 @@ This is not a reason to ignore the laptop market rather it is a reason why a ded
 | Data wrangling | Python 3.13, Pandas, NumPy |
 | Database | SQLite, DBeaver |
 | Analysis & charts | Matplotlib, Seaborn, Plotly |
-| Dashboard | Plotly - `looker/dashboard.html` (open in any browser) |
+| Dashboard | Plotly - `dashboard/dashboard.html` (open in any browser) |
 | Version control | Git, GitHub |
 
 ---
